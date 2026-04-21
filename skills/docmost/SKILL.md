@@ -1,131 +1,95 @@
 ---
 name: docmost
-description: "Use when user types /dc, docmost, wiki, 文档, Docmost, or asks to interact with Docmost wiki - reading/writing documents, creating pages, managing spaces."
+description: Docmost 文档平台 MCP 工具封装。用于读写 Docmost 文档、页面、空间。当需要创建文档、读取页面、更新内容、搜索文档、在 Docmost 中读写内容时使用此技能。关键词：Docmost、文档、页面、workspace、space、read page、create doc、update content。
 ---
 
-# Docmost Wiki Skill
+# Docmost MCP Skill
 
-Docmost 是一个自托管的企业 Wiki 平台（类似 Confluence/Notion）。
+通过 MCP 协议读写 Docmost 文档平台。
 
 ## 配置
 
-配置文件: `~/.openclaw/conf/docmost/config.json`
+API 密钥和工作区信息已配置在 `~/.openclaw/conf/docmost/config.json`。
 
-```json
-{
-  "url": "http://docmost:3000",
-  "email": "你的账号邮箱",
-  "password": "你的密码"
-}
+MCP 服务器地址：`http://docmost:3000/mcp`
+
+## 核心脚本
+
+### `scripts/mcp_call.sh` — MCP JSON-RPC 调用
+
+```bash
+./scripts/mcp_call.sh <method> <tool_name> [json_args]
+
+# method: tools/list 或 tools/call
+# tool: 工具名称
+# json_args: JSON 格式参数（可选，省略则用 {}）
 ```
 
-## 登录获取 Token
+**返回格式：** JSON（已解析）
 
-```python
-import urllib.request
-import json
-import http.cookiejar
+**示例：**
+```bash
+# 列出所有空间
+./scripts/mcp_call.sh tools/call list_spaces
 
-# 读取配置
-config = json.load(open("~/.openclaw/conf/docmost/config.json"))
+# 搜索页面
+./scripts/mcp_call.sh tools/call search_pages '{"query":"关键词","limit":10}'
 
-cj = http.cookiejar.CookieJar()
-opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+# 创建页面
+./scripts/mcp_call.sh tools/call create_page '{"spaceId":"UUID","title":"标题","content":"内容"}'
 
-login_data = json.dumps({"email": config["email"], "password": config["password"]}).encode('utf-8')
-req = urllib.request.Request(
-    f"{config['url']}/api/auth/login",
-    data=login_data,
-    headers={"Content-Type": "application/json"}
-)
-opener.open(req, timeout=10)
+# 获取页面
+./scripts/mcp_call.sh tools/call get_page '{"pageId":"UUID或slugId","format":"markdown"}'
 
-token = None
-for c in cj:
-    if c.name == 'authToken':
-        token = c.value
-        break
+# 更新页面
+./scripts/mcp_call.sh tools/call update_page '{"pageId":"UUID","content":"新内容","operation":"replace"}'
+
+# 列出页面
+./scripts/mcp_call.sh tools/call list_pages '{"spaceId":"UUID"}'
+
+# 移动页面
+./scripts/mcp_call.sh tools/call move_page '{"pageId":"UUID","parentPageId":null}'
 ```
 
-## API 端点
+### `scripts/docmost.sh` — 高级封装
 
-| 操作 | 端点 | 方法 |
-|------|------|------|
-| 获取页面列表 | `/api/pages/recent` | POST |
-| 获取页面详情 | `/api/pages/info` | POST |
-| 创建页面 | `/api/pages/create` | POST |
-| 更新页面内容 | `/api/pages/update` | POST |
-| 搜索 | `/api/search/suggest` | POST |
+```bash
+./scripts/docmost.sh <command> [args...]
 
-### 通用请求格式
-
-```python
-# 所有 API 调用都需要这个 header
-headers = {
-    "Content-Type": "application/json",
-    "Authorization": f"Bearer {token}"
-}
-
-# POST 请求
-data = json.dumps({"pageId": "...", "spaceId": "..."}).encode('utf-8')
-req = urllib.request.Request(
-    f"{config['url']}/api/pages/info",
-    data=data,
-    headers=headers,
-    method="POST"
-)
-resp = opener.open(req, timeout=10)
-result = json.loads(resp.read().decode())
+命令：
+  list-spaces                            列出所有空间
+  list-pages <spaceId> [limit]           列出空间中的页面
+  get-page <pageId> [format]            获取页面内容（默认 markdown）
+  create-page <spaceId> <title> [content] 创建页面
+  update-page <pageId> <content> [op]    更新页面（replace/append/prepend）
+  search <query> [limit]                 搜索页面
+  create-space <name> [desc]            创建空间
+  move-page <pageId> [parentPageId]     移动页面
 ```
 
-## 创建页面
+## 可用工具列表
 
-```python
-create_data = {
-    "spaceId": "空间ID",
-    "title": "页面标题",
-    "parentPageId": None  # 或父页面ID
-}
-```
+参考 `references/tools.md`
 
-## 更新页面内容
+## 常用空间 ID
 
-```python
-update_data = {
-    "pageId": "页面ID",
-    "spaceId": "空间ID",
-    "content": "# 标题\n\n内容（Markdown）",
-    "operation": "replace",  # append, prepend, replace
-    "format": "markdown"  # json, markdown, html
-}
-```
+- **M-General**: `0198954f-5807-72e1-81a5-2b98d6532f4c`
+- **N-General**: `019c5093-9507-7eb4-8f96-1574b7086156`
+- **共享文档**: `019896d3-4ae1-7662-a03a-4daf856f36b0`
+- **工作空间**: `019abef9-e9c4-71ec-ae29-9e6eb18bc98a`
 
-## 获取页面列表
+## 工作流程
 
-```python
-req = urllib.request.Request(
-    f"{config['url']}/api/pages/recent",
-    data=b"{}",
-    headers=headers,
-    method="POST"
-)
-resp = opener.open(req, timeout=10)
-pages = json.loads(resp.read().decode())
-# pages["data"]["items"] 包含页面列表
-```
-
-## 获取页面详情
-
-```python
-info_data = {
-    "pageId": "页面ID",
-    "spaceId": "空间ID"
-}
-```
+1. 先 `list-spaces` 或 `list-pages` 查看现有内容
+2. 用 `search` 找特定文档
+3. 用 `get-page` 读取内容
+4. 用 `create-page` 或 `update-page` 创建/更新
+5. 成功后在 Docmost Web UI 中验证
 
 ## 注意事项
 
-1. POST 请求 body 不能为空，即使没有参数也要传 `{}`
-2. Bearer Token 从登录后的 cookie 中获取
-3. 页面内容是 JSON 格式，包含 type 和 content 字段
-4. 部分 Space 可能只有只读权限
+- `spaceId` 和 `pageId` 都是 UUID 格式
+- `pageId` 也可以用 `slugId`（URL 中的短 ID）
+- `format` 可选：`markdown`（默认）、`html`、`json`
+- `operation` 可选：`replace`（默认）、`append`、`prepend`
+- 创建页面后返回 `id` 和 `slugId`，可用 `https://doc.mochencloud.cn:1443/{slugId}` 访问
