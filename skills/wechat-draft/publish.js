@@ -1,8 +1,4 @@
 #!/usr/bin/env node
-/**
- * Wechat Draft Publisher
- * 8 种图片效果：|border |shadow |rounded |phone |macos |browser |terminal |caption
- */
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -36,7 +32,6 @@ function markdownToHtml(md) {
     }
   });
 
-  // 8 种图片效果
   const defaultImage = markdownit.renderer.rules.image || function(tokens, idx, options, env, self) { return self.renderToken(tokens, idx, options); };
   markdownit.renderer.rules.image = function(tokens, idx, options, env, self) {
     const token = tokens[idx];
@@ -48,72 +43,161 @@ function markdownToHtml(md) {
     const hasPhone = alt.includes('|phone');
     const hasMacos = alt.includes('|macos');
     const hasBrowser = alt.includes('|browser');
+    const hasTerminal = alt.includes('|terminal');
     const hasPolaroid = alt.includes('|polaroid');
     const hasFilm = alt.includes('|film');
     const hasNeon = alt.includes('|neon');
     const hasVintage = alt.includes('|vintage');
-    const hasTerminal = alt.includes('|terminal');
+    const hasTv = alt.includes('|tv');
     const hasCaption = alt.includes('|caption');
-
     if (hasBorder) alt = alt.replace(/\|border/g, '').trim();
     if (hasShadow) alt = alt.replace(/\|shadow/g, '').trim();
     if (hasRounded) alt = alt.replace(/\|rounded/g, '').trim();
     if (hasPhone) alt = alt.replace(/\|phone/g, '').trim();
     if (hasMacos) alt = alt.replace(/\|macos/g, '').trim();
     if (hasBrowser) alt = alt.replace(/\|browser/g, '').trim();
+    if (hasTerminal) alt = alt.replace(/\|terminal/g, '').trim();
     if (hasPolaroid) alt = alt.replace(/\|polaroid/g, '').trim();
     if (hasFilm) alt = alt.replace(/\|film/g, '').trim();
     if (hasNeon) alt = alt.replace(/\|neon/g, '').trim();
     if (hasVintage) alt = alt.replace(/\|vintage/g, '').trim();
-    if (hasTerminal) alt = alt.replace(/\|terminal/g, '').trim();
+    if (hasTv) alt = alt.replace(/\|tv/g, '').trim();
     if (hasCaption) alt = alt.replace(/\|caption/g, '').trim();
     const title = token.attrGet('title') || '';
-    const titleAttr = title ? ` title="${title}"` : '';
-    const extraShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.4);' : '';
-    const polaroidShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.35)' : 'box-shadow:0 4px 16px rgba(0,0,0,0.2)';
-    const filmShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.5)' : 'box-shadow:0 6px 24px rgba(0,0,0,0.3)';
-    const neonShadow = hasShadow ? 'box-shadow:0 0 15px #0ff, 0 0 30px #f0f, 0 0 45px #ff0, 0 0 60px rgba(0,240,255,0.5)' : 'box-shadow:0 0 8px #0ff, 0 0 16px #f0f, 0 0 24px #ff0';
-    const vintageStyle = hasShadow ? 'box-shadow:8px 8px 20px rgba(139,119,101,0.4)' : '';
+    const titleAttr = title ? ' title="'+title+'"' : '';
 
-    // terminal 终端窗口
+    if (hasTv) {
+      // 复古电视机
+      const tvName = alt || 'CRT TV';
+      const tvShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.4)' : 'box-shadow:0 4px 16px rgba(0,0,0,0.25)';
+      const code = '<div style="display:block;max-width:280px;margin:1.5em auto;">' +
+        '<div style="background:#2d2d2d;border-radius:16px 16px 0 0;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;">' +
+        '<div style="display:flex;gap:6px;align-items:center;">' +
+        '<div style="width:16px;height:16px;border-radius:50%;background:#cc2222;box-shadow:inset 0 -2px 4px rgba(0,0,0,0.3);"></div>' +
+        '<div style="width:16px;height:16px;border-radius:50%;background:#1e8f23;box-shadow:inset 0 -2px 4px rgba(0,0,0,0.3);"></div>' +
+        '</div>' +
+        '<div style="display:flex;gap:8px;align-items:center;">' +
+        '<div style="width:20px;height:14px;background:#1a1a1a;border:1px solid #444;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#888;font-family:sans-serif;">|</div>' +
+        '<div style="width:20px;height:14px;background:#1a1a1a;border:1px solid #444;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#888;font-family:sans-serif;">·</div>' +
+        '</div>' +
+        '</div>' +
+        '<div style="background:#111;border-radius:0 0 8px 8px;overflow:hidden;border:3px solid #2d2d2d;border-top:none;' + tvShadow + ';">' +
+        '<img src="'+src+'" alt="'+alt+'"'+titleAttr+' style="display:block;width:100%;"></div>' +
+        '<div style="padding:4px 8px 0;font-size:10px;color:#666;font-family:sans-serif;display:flex;justify-content:space-between;">' +
+        '<span>CRT TV</span><span>'+tvName+'</span></div>' +
+        '</div>';
+      return code;
+    }
+
+    if (hasNeon) {
+      // 霓虹发光
+      const neonAlt = alt || 'Neon';
+      const neonStyle = hasShadow ? 'box-shadow:0 0 15px #0ff,0 0 30px #f0f,0 0 45px #ff0,0 0 60px rgba(0,240,255,0.5)' : 'box-shadow:0 0 8px #0ff,0 0 16px #f0f,0 0 24px #ff0';
+      const neonGrad = hasShadow ? '#0ff,#f0f,#ff0,#00ff00' : '#0ff,#f0f,#ff0';
+      return '<div style="display:block;max-width:100%;margin:1.5em auto;padding:3px;background:linear-gradient(135deg,#0ff,#f0f,#ff0);border-radius:12px;' + neonStyle + ';">' +
+        '<div style="background:#111;padding:4px;border-radius:10px;">' +
+        '<img src="'+src+'" alt="'+neonAlt+'"'+titleAttr+' style="display:block;max-width:100%;border-radius:6px;">' +
+        '</div>' +
+        '<p style="text-align:center;color:#0ff;font-size:11px;margin:6px 0 0;font-family:monospace;letter-spacing:2px;text-shadow:0 0 8px #0ff;">&#x26A1; '+neonAlt+'</p>' +
+        '</div>';
+    }
+
+    if (hasVintage) {
+      // 复古老照片
+      const vtAlt = alt || 'Vintage Photo';
+      const vtStyle = hasShadow ? 'box-shadow:8px 8px 20px rgba(139,119,101,0.4)' : '';
+      return '<div style="display:block;max-width:100%;margin:1em;padding:12px 12px 28px;background:#f5f0e6;border:2px solid #d4c5a9;border-radius:4px;' + vtStyle + '">' +
+        '<img src="'+src+'" alt="'+vtAlt+'"'+titleAttr+' style="display:block;width:100%;border-radius:4px;filter:sepia(0.3) contrast(0.95) brightness(0.95);">' +
+        '<p style="text-align:center;color:#8b7355;font-size:11px;margin:8px 0 0;font-family:Georgia,serif;font-style:italic;">&#8212; '+vtAlt+' &#8212;</p>' +
+        '</div>';
+    }
+
+    if (hasPolaroid) {
+      // 拍立得
+      const photoCaption = alt || 'Photo';
+      const polShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.35)' : 'box-shadow:0 4px 16px rgba(0,0,0,0.2)';
+      return '<div style="display:inline-block;max-width:100%;margin:1em;padding:10px 10px 28px;background:#fff;border-radius:4px;' + polShadow + '">' +
+        '<img src="'+src+'" alt="'+alt+'"'+titleAttr+' style="display:block;width:100%;border-radius:2px;">' +
+        '<p style="text-align:center;color:#666;font-size:12px;margin-top:8px;font-family:-apple-system,sans-serif;">'+photoCaption+'</p>' +
+        '</div>';
+    }
+
+    if (hasFilm) {
+      // 电影胶片
+      const filmTitle = alt || 'Film';
+      const filmShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.5)' : 'box-shadow:0 6px 24px rgba(0,0,0,0.3)';
+      const filmUrl = 'https://oss.example.com/film';
+      return '<div style="display:block;max-width:100%;margin:1.2em auto;padding:6px 6px 6px;border-radius:4px;background:#1a1a1a;' + filmShadow + '">' +
+        '<div style="background:#000;padding:4px;border-radius:2px;">' +
+        '<img src="'+src+'" alt="'+filmTitle+'"'+titleAttr+' style="display:block;width:100%;border-radius:2px;filter:contrast(1.1) brightness(0.92) sepia(0.15);">' +
+        '</div>' +
+        '<p style="color:#aaa;font-size:11px;text-align:center;margin:6px 0 0;font-family:monospace;letter-spacing:2px;">'+filmTitle+'</p>' +
+        '<div style="display:flex;justify-content:space-between;margin-top:4px;">' +
+        '<span style="color:#666;font-size:9px;font-family:monospace;">2026 &middot; FILM</span>' +
+        '<span style="color:#666;font-size:9px;font-family:monospace;">MINIMAX &middot; 50mm F1.8 ISO400</span>' +
+        '</div></div>';
+    }
+
     if (hasTerminal) {
+      // 终端窗口
       const termPath = alt || '~/code/project';
-      const termUser = 'root';
-      const termHost = 'localhost';
-      return `<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:8px;overflow:hidden;${extraShadow}border:1px solid #2d2d2d;background:#1e1e1e;"><div style="background:#323232;padding:8px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #2d2d2d;"><span style="width:12px;height:12px;border-radius:50%;background:#ff5f56;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#28c940;display:inline-block;"></span><span style="flex:1;"></span><span style="background:#1e1e1e;border:1px solid #4a4a4a;border-radius:4px;padding:3px 10px;color:#ccc;font-size:11px;font-family:Menlo,Monaco,monospace;">${termUser}@${termHost}:${termPath}</span><span style="width:8px;"></span></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;"/></div>`;
+      const termShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.4)' : '';
+      return '<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:8px;overflow:hidden;' + termShadow + ';border:1px solid #2d2d2d;background:#1e1e1e">' +
+        '<div style="background:#323232;padding:8px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #2d2d2d">' +
+        '<span style="width:12px;height:12px;border-radius:50%;background:#ff5f56;display:inline-block;"></span>' +
+        '<span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span>' +
+        '<span style="width:12px;height:12px;border-radius:50%;background:#28c840;display:inline-block;"></span>' +
+        '<span style="flex:1"></span>' +
+        '<span style="background:#1e1e1e;border:1px solid #4a4a4a;border-radius:4px;padding:3px 10px;color:#ccc;font-size:11px;font-family:Menlo,Monaco,monospace;">root@localhost:'+termPath+'</span>' +
+        '<span style="width:8px"></span>' +
+        '</div><img src="'+src+'" alt="'+alt+'"'+titleAttr+' style="display:block;width:100%;"></div>';
     }
 
-    // phone 手机边框
-    if (hasPhone) {
-      const phoneShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.4);' : 'box-shadow:0 4px 20px rgba(0,0,0,0.3);';
-      return `<div style="display:block;max-width:320px;margin:1.2em auto;padding:8px 8px 12px;background:#1e293b;border-radius:24px;${phoneShadow}"><div style="width:60px;height:4px;background:#334155;border-radius:4px;margin:0 auto 8px;"></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;border-radius:16px;"></div>`;
-    }
-
-    // macOS 窗口
     if (hasMacos) {
+      // macOS 窗口
       const macTitle = alt || 'Screenshot';
-      const macShadow = hasShadow ? '0 12px 40px rgba(0,0,0,0.5)' : '0 8px 30px rgba(0,0,0,0.3)';
-      return `<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:10px;overflow:hidden;box-shadow:${macShadow};border:1px solid #2d2d2d;background:#1e1e1e;"><div style="background:#2d2d2d;padding:10px 14px;display:flex;align-items:center;gap:8px;"><span style="width:12px;height:12px;border-radius:50%;background:#ff5f56;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#28c940;display:inline-block;"></span><span style="flex:1;text-align:center;color:#999;font-size:12px;font-family:-apple-system,sans-serif;">${macTitle}</span></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;"></div>`;
+      const macShadow = hasShadow ? 'box-shadow:0 12px 40px rgba(0,0,0,0.5)' : 'box-shadow:0 8px 30px rgba(0,0,0,0.3)';
+      return '<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:10px;overflow:hidden;' + macShadow + ';border:1px solid #2d2d2d;background:#1e1e1e">' +
+        '<div style="background:#2d2d2d;padding:10px 14px;display:flex;align-items:center;gap:8px">' +
+        '<span style="width:12px;height:12px;border-radius:50%;background:#ff5f56;"></span>' +
+        '<span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;"></span>' +
+        '<span style="width:12px;height:12px;border-radius:50%;background:#28c840;"></span>' +
+        '<span style="flex:1;text-align:center;color:#999;font-size:12px;font-family:-apple-system,sans-serif;">'+macTitle+'</span>' +
+        '</div><img src="'+src+'" alt="'+alt+'"'+titleAttr+' style="display:block;width:100%;"></div>';
     }
 
-    // browser 浏览器窗口
     if (hasBrowser) {
+      // 浏览器窗口
       const browserUrl = alt || 'https://example.com';
-      const browserShadow = hasShadow ? '0 10px 36px rgba(0,0,0,0.35)' : '0 6px 24px rgba(0,0,0,0.25)';
-      return `<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:8px;overflow:hidden;box-shadow:${browserShadow};border:1px solid #d1d5db;background:#fff;"><div style="background:#f3f4f6;padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #d1d5db;"><span style="font-size:14px;">🔒</span><span style="flex:1;color:#6b7280;font-size:12px;font-family:-apple-system,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${browserUrl}</span></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;"></div>`;
+      const browserShadow = hasShadow ? 'box-shadow:0 10px 36px rgba(0,0,0,0.35)' : 'box-shadow:0 6px 24px rgba(0,0,0,0.25)';
+      return '<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:8px;overflow:hidden;' + browserShadow + ';border:1px solid #d1d5db;background:#fff">' +
+        '<div style="background:#f3f4f6;padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #d1d5db">' +
+        '<span style="font-size:14px;">&#128274;</span>' +
+        '<span style="flex:1;color:#6b7280;font-size:12px;font-family:-apple-system,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+browserUrl+'</span>' +
+        '</div><img src="'+src+'" alt="'+alt+'"'+titleAttr+' style="display:block;width:100%;"></div>';
     }
 
-    // 普通效果
-    let style = 'display:block;max-width:100%;margin:1.2em auto;';
-    if (hasRounded) style += 'border-radius:50%;';
-    else style += 'border-radius:8px;';
-    if (hasBorder) style += 'border:2px solid var(--el-border);';
-    if (hasShadow) style += 'box-shadow:0 4px 20px rgba(0,0,0,0.4);';
-    if (hasCaption) {
-      const captionText = alt || '';
-      return `<figure style="margin:1.2em auto;"><img src="${src}" alt="${alt}"${titleAttr} style="${style}"></figure><figcaption style="text-align:center;color:var(--el-muted);font-size:80%;margin-top:0.4em;font-style:italic;">${captionText}</figcaption>`;
+    if (hasPhone) {
+      // 手机边框
+      const phoneShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.4)' : 'box-shadow:0 4px 20px rgba(0,0,0,0.3)';
+      return '<div style="display:block;max-width:320px;margin:1.2em auto;padding:8px 8px 12px;background:#1e293b;border-radius:24px;' + phoneShadow + '">' +
+        '<div style="width:60px;height:4px;background:#334155;border-radius:4px;margin:0 auto 8px"></div>' +
+        '<img src="'+src+'" alt="'+alt+'"'+titleAttr+' style="display:block;width:100%;border-radius:16px;"></div>';
     }
-    return `<img src="${src}" alt="${alt}"${titleAttr} style="${style}">`;
+
+    // caption 图片描述
+    if (hasCaption) {
+      const captionText = alt;
+      return '<figure style="margin:1.2em auto;text-align:center;">' +
+        '<img src="'+src+'" alt="'+alt+'"'+titleAttr+' style="display:block;max-width:100%;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.1);">' +
+        '<figcaption style="text-align:center;color:#94a3b8;font-size:13px;margin-top:0.5em;font-style:italic;">'+captionText+'</figcaption></figure>';
+    }
+
+    // 普通图片
+    let style = 'display:block;max-width:100%;margin:1.2em auto;border-radius:8px;';
+    if (hasBorder) style += 'border:2px solid #334155;';
+    if (hasShadow) style += 'box-shadow:0 4px 20px rgba(0,0,0,0.4);';
+    return '<img src="'+src+'" alt="'+alt+'"'+titleAttr+' style="'+style+'">';
   };
 
   return markdownit.render(md);
@@ -162,10 +246,10 @@ function applyCss(html, theme) {
     if (!selectorMap[tag]) continue;
     const combinedProps = selectorMap[tag].join(' ');
     if (!combinedProps) continue;
-    const re = new RegExp(`<${tag}([^>]*?)(style="[^"]*")?([^>]*?)>`, 'gi');
+    const re = new RegExp('<'+tag+'([^>]*?)(style="[^"]*")?([^>]*?)>', 'gi');
     result = result.replace(re, (match, before, existingStyle, after) => {
       if (existingStyle) return match;
-      return `<${tag}${before} style="${combinedProps}"${after}>`;
+      return '<'+tag+before+' style="'+combinedProps+'"'+after+'>';
     });
   }
   return result;
@@ -189,7 +273,7 @@ async function publishDraft({ title, author, digest, coverPath, mdPath, theme })
     return { errcode: -1, errmsg: JSON.stringify(thumbData) };
   }
   console.log('   thumb_media_id: ' + thumbData.media_id);
-  console.log('4. Markdown -> HTML...');
+  console.log('4. Markdown -> HTML (theme: ' + theme + ')...');
   const md = fs.readFileSync(mdPath, 'utf8');
   const rawHtml = markdownToHtml(md);
   const content = applyCss(rawHtml, theme);
@@ -230,8 +314,8 @@ if (require.main === module) {
   }
   if (!mdPath || !coverPath || !title) {
     console.log('用法: node publish.js [--theme elegant] <article.md> <cover.png> <title> [digest]');
-    console.log('主题: default, grace, simple, elegant');
-    console.log('效果: |border |shadow |rounded |phone |macos |browser |terminal |caption');
+    console.log('主题: grace, elegant, default, simple');
+    console.log('效果: border shadow rounded phone macos browser terminal polaroid film neon vintage tv caption');
     process.exit(1);
   }
   publishDraft({ mdPath, coverPath, title, digest: digest || '', theme })
