@@ -1,0 +1,336 @@
+/**
+ * MD 优雅科技主题 v2 (elegant)
+ * 深色科技风，高对比度，emoji 标题，微信草稿箱专用
+ */
+
+/* ==================== 基础变量 ==================== */
+:root {
+  --el-primary: #1a56db;
+  --el-bg: #0f172a;
+  --el-surface: #1e293b;
+  --el-border: #334155;
+  --el-text: #e2e8f0;
+  --el-muted: #94a3b8;
+  --el-accent: #3b82f6;
+  --el-green: #10b981;
+  --el-red: #ef4444;
+  --el-yellow: #f59e0b;
+  --el-purple: #8b5cf6;
+}
+
+/* ==================== 标题样式 ==================== */
+
+/* H1：emoji 标题，底部亮线 */
+h1 {
+  font-size: calc(var(--md-font-size) * 1.3);
+  font-weight: bold;
+  text-align: left;
+  color: var(--el-text);
+  border-bottom: 2px solid var(--el-accent);
+  padding-bottom: 0.4em;
+  margin: 1.8em 0 1em;
+  letter-spacing: 0.02em;
+}
+
+/* H2：大分区标题，深色胶囊 */
+h2 {
+  display: inline-block;
+  padding: 0.35em 1em;
+  border-radius: 20px;
+  font-size: calc(var(--md-font-size) * 1.15);
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, var(--el-primary), var(--el-accent));
+  margin: 2em 0 1em;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
+  letter-spacing: 0.03em;
+}
+
+/* H3：左侧竖线 + 背景色 */
+h3 {
+  padding: 0.4em 0.8em;
+  border-left: 4px solid var(--el-accent);
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 0 6px 6px 0;
+  font-size: calc(var(--md-font-size) * 1.08);
+  font-weight: bold;
+  color: var(--el-accent);
+  margin: 1.5em 0 0.8em;
+}
+
+/* H4：纯文字强调 */
+h4 {
+  font-size: calc(var(--md-font-size) * 1.02);
+  font-weight: bold;
+  color: var(--el-text);
+  border-bottom: 1px solid var(--el-border);
+  padding-bottom: 0.2em;
+  margin: 1.2em 0 0.6em;
+}
+
+h5, h6 {
+  font-size: var(--md-font-size);
+  font-weight: bold;
+  color: var(--el-muted);
+  margin: 1em 0 0.5em;
+}
+
+/* ==================== 段落 ==================== */
+p {
+  margin: 1em 0;
+  line-height: 1.9;
+  color: var(--el-text);
+}
+
+/* ==================== 引用块 ==================== */
+blockquote {
+  position: relative;
+  padding: 0.8em 1em 0.8em 2.5em;
+  border-radius: 8px;
+  background: rgba(59, 130, 246, 0.08);
+  border-left: 3px solid var(--el-accent);
+  color: var(--el-text);
+  margin: 1.2em 0;
+}
+
+blockquote::before {
+  content: '💡';
+  position: absolute;
+  left: 0.6em;
+  top: 0.6em;
+  font-size: 1.1em;
+}
+
+blockquote > p {
+  margin: 0;
+  color: var(--el-text);
+  font-style: normal;
+  line-height: 1.8;
+}
+
+/* ==================== 代码块 ==================== */
+pre.code__pre,
+.hljs.code__pre {
+  border-radius: 10px;
+  padding: 0 !important;
+  margin: 1.2em 0;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  background: #1e1e1e !important;
+}
+
+.mac-sign {
+  display: block;
+  padding: 8px 14px 0;
+  background: #2d2d2d;
+  border-radius: 10px 10px 0 0;
+}
+
+pre.code__pre code,
+.hljs.code__pre code {
+  display: block;
+  padding: 0.8em 1.2em;
+  background: #1e1e1e !important;
+  border-radius: 0 0 10px 10px;
+  line-height: 1.7;
+  font-size: 88%;
+  color: #d4d4d4;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 行内代码 */
+code:not(pre code) {
+  font-size: 86%;
+  color: #7dd3fc;
+  background: rgba(59, 130, 246, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* ==================== 列表 ==================== */
+ul {
+  padding-left: 0;
+  margin: 1em 0;
+  list-style: none;
+}
+
+ul > li {
+  position: relative;
+  padding-left: 1.6em;
+  margin: 0.35em 0;
+  color: var(--el-text);
+  line-height: 1.8;
+}
+
+ul > li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  color: var(--el-accent);
+  font-size: 0.9em;
+}
+
+ol {
+  padding-left: 1.5em;
+  margin: 1em 0;
+  counter-reset: ol-counter;
+  list-style: none;
+}
+
+ol > li {
+  counter-increment: ol-counter;
+  position: relative;
+  padding-left: 1em;
+  margin: 0.35em 0;
+  color: var(--el-text);
+  line-height: 1.8;
+}
+
+ol > li::before {
+  content: counter(ol-counter) '.';
+  position: absolute;
+  left: -0.5em;
+  color: var(--el-accent);
+  font-weight: bold;
+}
+
+li > p {
+  margin: 0.1em 0;
+}
+
+/* ==================== 表格（深色主题）==================== */
+section:has(table) {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+  margin: 1.5em 0;
+  border: 1px solid var(--el-border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 90%;
+}
+
+/* 表头：深蓝紫渐变背景 + 白色文字 */
+thead tr {
+  background: linear-gradient(135deg, #1e3a5f, #1a365d) !important;
+}
+
+th {
+  color: #e2e8f0 !important;
+  font-weight: bold;
+  padding: 0.7em 1em;
+  text-align: left;
+  border: none !important;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+td {
+  color: var(--el-text) !important;
+  padding: 0.55em 1em;
+  border: none !important;
+  border-bottom: 1px solid var(--el-border) !important;
+}
+
+tr:nth-child(even) td {
+  background: rgba(59, 130, 246, 0.05);
+}
+
+tr:last-child td {
+  border-bottom: none !important;
+}
+
+tr:hover td {
+  background: rgba(59, 130, 246, 0.1) !important;
+}
+
+/* ==================== 图片 ==================== */
+img {
+  display: block;
+  max-width: 100%;
+  margin: 1.2em auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+
+figure {
+  margin: 1.5em 0;
+  text-align: center;
+}
+
+figcaption {
+  text-align: center;
+  color: var(--el-muted);
+  font-size: 80%;
+  margin-top: 0.4em;
+}
+
+/* ==================== 分隔线 ==================== */
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--el-accent) 30%, var(--el-accent) 70%, transparent);
+  opacity: 0.4;
+  margin: 2.5em auto;
+}
+
+/* ==================== 链接 ==================== */
+a {
+  color: var(--el-accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+a:hover {
+  border-bottom-color: var(--el-accent);
+}
+
+/* ==================== 强调 ==================== */
+strong {
+  color: #7dd3fc;
+  font-weight: bold;
+}
+
+em {
+  color: var(--el-text);
+  font-style: italic;
+}
+
+/* ==================== GFM Alerts ==================== */
+.alert-title-note,
+.alert-title-tip,
+.alert-title-info,
+.alert-title-important,
+.alert-title-warning,
+.alert-title-caution,
+.alert-title-danger,
+.alert-title-error,
+.alert-title-success,
+.alert-title-example {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.8em 1em;
+  border-radius: 8px;
+  margin: 1.2em 0;
+  font-size: 92%;
+  font-weight: bold;
+}
+
+.alert-title-note   { background: rgba(59,130,246,0.12); color: #7dd3fc; border-left: 4px solid #3b82f6; }
+.alert-title-tip    { background: rgba(16,185,129,0.12); color: #6ee7b7; border-left: 4px solid #10b981; }
+.alert-title-info   { background: rgba(99,102,241,0.12); color: #a5b4fc; border-left: 4px solid #6366f1; }
+.alert-title-important { background: rgba(139,92,246,0.12); color: #c4b5fd; border-left: 4px solid #8b5cf6; }
+.alert-title-warning { background: rgba(245,158,11,0.12); color: #fcd34d; border-left: 4px solid #f59e0b; }
+.alert-title-caution  { background: rgba(249,115,22,0.12); color: #fdba74; border-left: 4px solid #f97316; }
+.alert-title-danger, .alert-title-error { background: rgba(239,68,68,0.12); color: #fca5a5; border-left: 4px solid #ef4444; }
+.alert-title-success  { background: rgba(16,185,129,0.12); color: #6ee7b7; border-left: 4px solid #10b981; }
+.alert-title-example  { background: rgba(139,92,246,0.12); color: #c4b5fd; border-left: 4px solid #8b5cf6; }
