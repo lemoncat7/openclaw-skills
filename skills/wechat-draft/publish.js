@@ -87,6 +87,7 @@ function imgRule(tokens, idx) {
   const Pn = alt.includes('|pin');
   const Sl = alt.includes('|slim');
   const Rw = alt.includes('|row');
+  const Mn = alt.includes('|minimal');
   const Ad = alt.includes('|adaptive');
   const Dl = alt.includes('|dual');
   const Fs = alt.includes('|focus');
@@ -99,7 +100,7 @@ function imgRule(tokens, idx) {
           .replace(/\|neon/g,'').replace(/\|vintage/g,'').replace(/\|tv/g,'')
           .replace(/\|code/g,'').replace(/\|note/g,'').replace(/\|ipad/g,'')
           .replace(/\|newspaper/g,'').replace(/\|grayscale/g,'').replace(/\|float/g,'')
-          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|tape/g,'').replace(/\|bookpage/g,'').replace(/\|comic/g,'').replace(/\|ticket/g,'').replace(/\|caption/g,'').replace(/\|slim/g,'').replace(/\|pin/g,'').replace(/\|focus/g,'').replace(/\|dual/g,'').replace(/\|adaptive/g,'').replace(/\|row/g,'').trim();
+          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|tape/g,'').replace(/\|bookpage/g,'').replace(/\|comic/g,'').replace(/\|ticket/g,'').replace(/\|caption/g,'').replace(/\|slim/g,'').replace(/\|pin/g,'').replace(/\|focus/g,'').replace(/\|dual/g,'').replace(/\|adaptive/g,'').replace(/\|row/g,'').replace(/\|minimal/g,'').trim();
   const title = t.attrGet('title') || '';
   const ta = title ? ' title="' + title + '"' : '';
 
