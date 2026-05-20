@@ -36,6 +36,7 @@ function imgRule(tokens, idx) {
   const I = alt.includes('|ipad');
   const Np = alt.includes('|newspaper');
   const G = alt.includes('|grayscale');
+  const Gl = alt.includes('|glass');
   const Fl = alt.includes('|float');
   const Gr = alt.includes('|gradient');
   const Cp = alt.includes('|caption');
@@ -45,9 +46,18 @@ function imgRule(tokens, idx) {
           .replace(/\|neon/g,'').replace(/\|vintage/g,'').replace(/\|tv/g,'')
           .replace(/\|code/g,'').replace(/\|note/g,'').replace(/\|ipad/g,'')
           .replace(/\|newspaper/g,'').replace(/\|grayscale/g,'').replace(/\|float/g,'')
-          .replace(/\|gradient/g,'').replace(/\|caption/g,'').trim();
+          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|caption/g,'').trim();
   const title = t.attrGet('title') || '';
   const ta = title ? ' title="' + title + '"' : '';
+
+  if (Gl) {
+    const glAlt = alt || 'Glass Card';
+    const glPad = S ? 'padding:16px' : 'padding:10px';
+    const glSd = S ? 'box-shadow:0 16px 48px rgba(0,0,0,0.25),0 4px 12px rgba(0,0,0,0.15)' : 'box-shadow:0 8px 32px rgba(0,0,0,0.15)';
+    return '<div style="display:block;max-width:100%;margin:1.5em auto;background:rgba(255,255,255,0.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.18);border-radius:16px;' + glPad + ';' + glSd + 'background-image:linear-gradient(135deg,rgba(255,255,255,0.1),transparent,rgba(255,255,255,0.05));position:relative;overflow:hidden">' +
+           '<div style="position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.08),transparent 60%);pointer-events:none"></div>' +
+           '<img src="'+src+'" alt="'+glAlt+'"'+ta+' style="display:block;width:100%;border-radius:8px;position:relative;z-index:1"></div>';
+  }
 
   if (Gr) {
     const gradStyle = S
