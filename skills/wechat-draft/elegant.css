@@ -1,323 +1,433 @@
 /**
- * MD 优雅科技主题 v2 (elegant)
- * 深色科技风，高对比度，emoji 标题，微信草稿箱专用
+ * MD 默认主题（经典主题）
+ * 按 Alt/Option + Shift + F 可格式化
+ * 如需使用主题色，请使用 var(--md-primary-color) 代替颜色值
  */
 
-/* CSS variables removed - using base.css defaults */
-
-/* ==================== 标题样式 ==================== */
-
-/* H1：emoji 标题，底部亮线 */
+/* ==================== 一级标题 ==================== */
 h1 {
-  font-size: calc(var(--md-font-size) * 1.3);
-  font-weight: bold;
-  text-align: left;
-  color: var(--md-primary-color);
+  display: table;
+  padding: 0 1em;
   border-bottom: 2px solid var(--md-primary-color);
-  padding-bottom: 0.4em;
-  margin: 1.8em 0 1em;
-  letter-spacing: 0.02em;
-}
-
-/* H2：大分区标题，深色胶囊 */
-h2 {
-  display: inline-block;
-  padding: 0.35em 1em;
-  border-radius: 20px;
-  font-size: calc(var(--md-font-size) * 1.15);
-  font-weight: bold;
-  color: #fff;
-  background: linear-gradient(135deg, var(--md-primary-color), var(--md-primary-color));
-  margin: 2em 0 1em;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
-  letter-spacing: 0.03em;
-}
-
-/* H3：左侧竖线 + 背景色 */
-h3 {
-  padding: 0.4em 0.8em;
-  border-left: 4px solid var(--md-primary-color);
-  background: rgba(59, 130, 246, 0.1);
-  border-radius: 0 6px 6px 0;
-  font-size: calc(var(--md-font-size) * 1.08);
-  font-weight: bold;
-  color: var(--md-primary-color);
-  margin: 1.5em 0 0.8em;
-}
-
-/* H4：纯文字强调 */
-h4 {
-  font-size: calc(var(--md-font-size) * 1.02);
-  font-weight: bold;
-  color: var(--md-primary-color);
-  border-bottom: 1px solid var(--md-primary-color);
-  padding-bottom: 0.2em;
-  margin: 1.2em 0 0.6em;
-}
-
-h5, h6 {
-  font-size: var(--md-font-size);
-  font-weight: bold;
+  margin: 2em auto 1em;
   color: hsl(var(--foreground));
-  margin: 1em 0 0.5em;
+  font-size: calc(var(--md-font-size) * 1.2);
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ==================== 二级标题 ==================== */
+h2 {
+  display: table;
+  padding: 0 0.2em;
+  margin: 4em auto 2em;
+  color: #fff;
+  background: var(--md-primary-color);
+  font-size: calc(var(--md-font-size) * 1.2);
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ==================== 三级标题 ==================== */
+h3 {
+  padding-left: 8px;
+  border-left: 3px solid var(--md-primary-color);
+  margin: 2em 8px 0.75em 0;
+  color: hsl(var(--foreground));
+  font-size: calc(var(--md-font-size) * 1.1);
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+/* ==================== 四级标题 ==================== */
+h4 {
+  margin: 2em 8px 0.5em;
+  color: var(--md-primary-color);
+  font-size: calc(var(--md-font-size) * 1);
+  font-weight: bold;
+}
+
+/* ==================== 五级标题 ==================== */
+h5 {
+  margin: 1.5em 8px 0.5em;
+  color: var(--md-primary-color);
+  font-size: calc(var(--md-font-size) * 1);
+  font-weight: bold;
+}
+
+/* ==================== 六级标题 ==================== */
+h6 {
+  margin: 1.5em 8px 0.5em;
+  font-size: calc(var(--md-font-size) * 1);
+  color: var(--md-primary-color);
 }
 
 /* ==================== 段落 ==================== */
 p {
-  margin: 1em 0;
-  line-height: 1.9;
-  color: var(--md-primary-color);
+  margin: 1.5em 8px;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
 }
 
 /* ==================== 引用块 ==================== */
 blockquote {
-  position: relative;
-  padding: 0.8em 1em 0.8em 2.5em;
-  border-radius: 8px;
-  background: rgba(59, 130, 246, 0.08);
-  border-left: 3px solid var(--md-primary-color);
-  color: var(--md-primary-color);
-  margin: 1.2em 0;
-}
-
-blockquote::before {
-  content: '💡';
-  position: absolute;
-  left: 0.6em;
-  top: 0.6em;
-  font-size: 1.1em;
+  font-style: normal;
+  padding: 1em;
+  border-left: 4px solid var(--md-primary-color);
+  border-radius: 6px;
+  color: hsl(var(--foreground));
+  background: var(--blockquote-background);
+  margin-bottom: 1em;
 }
 
 blockquote > p {
-  margin: 0;
-  color: var(--md-primary-color);
-  font-style: normal;
-  line-height: 1.8;
-}
-
-/* ==================== 代码块 ==================== */
-pre.code__pre,
-.hljs.code__pre {
-  border-radius: 10px;
-  padding: 0 !important;
-  margin: 1.2em 0;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
-  background: #1e1e1e !important;
-}
-
-.mac-sign {
   display: block;
-  padding: 8px 14px 0;
-  background: #2d2d2d;
-  border-radius: 10px 10px 0 0;
-}
-
-pre.code__pre code,
-.hljs.code__pre code {
-  display: block;
-  padding: 0.8em 1.2em;
-  background: #1e1e1e !important;
-  border-radius: 0 0 10px 10px;
-  line-height: 1.7;
-  font-size: 88%;
-  color: #d4d4d4;
-  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Menlo, Consolas, monospace;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-/* 行内代码 */
-code:not(pre code) {
-  font-size: 86%;
-  color: #7dd3fc;
-  background: rgba(59, 130, 246, 0.12);
-  padding: 2px 6px;
-  border-radius: 4px;
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  font-family: 'SF Mono', Menlo, Consolas, monospace;
-}
-
-/* ==================== 列表 ==================== */
-ul {
-  padding-left: 0;
-  margin: 1em 0;
-  list-style: none;
-}
-
-ul > li {
-  position: relative;
-  padding-left: 1.6em;
-  margin: 0.35em 0;
-  color: var(--md-primary-color);
-  line-height: 1.8;
-}
-
-ul > li::before {
-  content: '▸';
-  position: absolute;
-  left: 0;
-  top: 0.05em;
-  color: var(--md-primary-color);
-  font-size: 0.9em;
-}
-
-ol {
-  padding-left: 1.5em;
-  margin: 1em 0;
-  counter-reset: ol-counter;
-  list-style: none;
-}
-
-ol > li {
-  counter-increment: ol-counter;
-  position: relative;
-  padding-left: 1em;
-  margin: 0.35em 0;
-  color: var(--md-primary-color);
-  line-height: 1.8;
-}
-
-ol > li::before {
-  content: counter(ol-counter) '.';
-  position: absolute;
-  left: -0.5em;
-  color: var(--md-primary-color);
-  font-weight: bold;
-}
-
-li > p {
-  margin: 0.1em 0;
-}
-
-/* ==================== 表格（深色主题）==================== */
-section:has(table) {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  border-radius: 8px;
-  margin: 1.5em 0;
-  border: 1px solid var(--md-primary-color);
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 90%;
-}
-
-/* 表头：深蓝紫渐变背景 + 白色文字 */
-thead tr {
-  background: linear-gradient(135deg, #1e3a5f, #1a365d) !important;
-}
-
-th {
-  color: #e2e8f0 !important;
-  font-weight: bold;
-  padding: 0.7em 1em;
-  text-align: left;
-  border: none !important;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-}
-
-td {
-  color: var(--md-primary-color) !important;
-  padding: 0.55em 1em;
-  border: none !important;
-  border-bottom: 1px solid var(--md-primary-color) !important;
-}
-
-tr:nth-child(even) td {
-  background: rgba(59, 130, 246, 0.05);
-}
-
-tr:last-child td {
-  border-bottom: none !important;
-}
-
-tr:hover td {
-  background: rgba(59, 130, 246, 0.1) !important;
-}
-
-/* ==================== 图片 ==================== */
-img {
-  display: block;
-  max-width: 100%;
-  margin: 1.2em auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
-}
-
-figure {
-  margin: 1.5em 0;
-  text-align: center;
-}
-
-figcaption {
-  text-align: center;
+  font-size: 1em;
+  letter-spacing: 0.1em;
   color: hsl(var(--foreground));
-  font-size: 80%;
-  margin-top: 0.4em;
+  margin: 0;
 }
 
-/* ==================== 分隔线 ==================== */
-hr {
-  border: none;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--md-primary-color) 30%, var(--md-primary-color) 70%, transparent);
-  opacity: 0.4;
-  margin: 2.5em auto;
-}
-
-/* ==================== 链接 ==================== */
-a {
-  color: var(--md-primary-color);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.4);
-}
-
-a:hover {
-  border-bottom-color: var(--md-primary-color);
-}
-
-/* ==================== 强调 ==================== */
-strong {
-  color: #7dd3fc;
-  font-weight: bold;
-}
-
-em {
-  color: var(--md-primary-color);
-  font-style: italic;
-}
-
-/* ==================== GFM Alerts ==================== */
+/* ==================== GFM 警告块 ==================== */
 .alert-title-note,
 .alert-title-tip,
 .alert-title-info,
 .alert-title-important,
 .alert-title-warning,
 .alert-title-caution,
+.alert-title-abstract,
+.alert-title-summary,
+.alert-title-tldr,
+.alert-title-todo,
+.alert-title-success,
+.alert-title-done,
+.alert-title-question,
+.alert-title-help,
+.alert-title-faq,
+.alert-title-failure,
+.alert-title-fail,
+.alert-title-missing,
 .alert-title-danger,
 .alert-title-error,
-.alert-title-success,
-.alert-title-example {
+.alert-title-bug,
+.alert-title-example,
+.alert-title-quote,
+.alert-title-cite {
   display: flex;
   align-items: center;
-  gap: 0.6em;
-  padding: 0.8em 1em;
-  border-radius: 8px;
-  margin: 1.2em 0;
-  font-size: 92%;
-  font-weight: bold;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
 }
 
-.alert-title-note   { background: rgba(59,130,246,0.12); color: #7dd3fc; border-left: 4px solid #3b82f6; }
-.alert-title-tip    { background: rgba(16,185,129,0.12); color: #6ee7b7; border-left: 4px solid #10b981; }
-.alert-title-info   { background: rgba(99,102,241,0.12); color: #a5b4fc; border-left: 4px solid #6366f1; }
-.alert-title-important { background: rgba(139,92,246,0.12); color: #c4b5fd; border-left: 4px solid #8b5cf6; }
-.alert-title-warning { background: rgba(245,158,11,0.12); color: #fcd34d; border-left: 4px solid #f59e0b; }
-.alert-title-caution  { background: rgba(249,115,22,0.12); color: #fdba74; border-left: 4px solid #f97316; }
-.alert-title-danger, .alert-title-error { background: rgba(239,68,68,0.12); color: #fca5a5; border-left: 4px solid #ef4444; }
-.alert-title-success  { background: rgba(16,185,129,0.12); color: #6ee7b7; border-left: 4px solid #10b981; }
-.alert-title-example  { background: rgba(139,92,246,0.12); color: #c4b5fd; border-left: 4px solid #8b5cf6; }
+.alert-title-note {
+  color: #478be6;
+}
+
+.alert-title-tip {
+  color: #57ab5a;
+}
+
+.alert-title-info {
+  color: #93c5fd;
+}
+
+.alert-title-important {
+  color: #986ee2;
+}
+
+.alert-title-warning {
+  color: #c69026;
+}
+
+.alert-title-caution {
+  color: #e5534b;
+}
+
+/* Obsidian-style callout colors */
+.alert-title-abstract,
+.alert-title-summary,
+.alert-title-tldr {
+  color: #00bfff;
+}
+
+.alert-title-todo {
+  color: #478be6;
+}
+
+.alert-title-success,
+.alert-title-done {
+  color: #57ab5a;
+}
+
+.alert-title-question,
+.alert-title-help,
+.alert-title-faq {
+  color: #c69026;
+}
+
+.alert-title-failure,
+.alert-title-fail,
+.alert-title-missing {
+  color: #e5534b;
+}
+
+.alert-title-danger,
+.alert-title-error {
+  color: #e5534b;
+}
+
+.alert-title-bug {
+  color: #e5534b;
+}
+
+.alert-title-example {
+  color: #986ee2;
+}
+
+.alert-title-quote,
+.alert-title-cite {
+  color: #9ca3af;
+}
+
+/* GFM Alert SVG 图标颜色 */
+.alert-icon-note {
+  fill: #478be6;
+}
+
+.alert-icon-tip {
+  fill: #57ab5a;
+}
+
+.alert-icon-info {
+  fill: #93c5fd;
+}
+
+.alert-icon-important {
+  fill: #986ee2;
+}
+
+.alert-icon-warning {
+  fill: #c69026;
+}
+
+.alert-icon-caution {
+  fill: #e5534b;
+}
+
+/* Obsidian-style callout icon colors */
+.alert-icon-abstract,
+.alert-icon-summary,
+.alert-icon-tldr {
+  fill: #00bfff;
+}
+
+.alert-icon-todo {
+  fill: #478be6;
+}
+
+.alert-icon-success,
+.alert-icon-done {
+  fill: #57ab5a;
+}
+
+.alert-icon-question,
+.alert-icon-help,
+.alert-icon-faq {
+  fill: #c69026;
+}
+
+.alert-icon-failure,
+.alert-icon-fail,
+.alert-icon-missing {
+  fill: #e5534b;
+}
+
+.alert-icon-danger,
+.alert-icon-error {
+  fill: #e5534b;
+}
+
+.alert-icon-bug {
+  fill: #e5534b;
+}
+
+.alert-icon-example {
+  fill: #986ee2;
+}
+
+.alert-icon-quote,
+.alert-icon-cite {
+  fill: #9ca3af;
+}
+
+/* ==================== 代码块 ==================== */
+pre.code__pre,
+.hljs.code__pre {
+  font-size: 90%;
+  overflow-x: auto;
+  border-radius: 8px;
+  padding: 0 !important;
+  line-height: 1.5;
+  margin: 10px 8px;
+}
+
+/* ==================== 图片 ==================== */
+img {
+  display: block;
+  max-width: 100%;
+  margin: 0.1em auto 0.5em;
+  border-radius: 4px;
+}
+
+/* ==================== 列表 ==================== */
+ol {
+  padding-left: 1em;
+  margin-left: 0;
+  color: hsl(var(--foreground));
+}
+
+ul {
+  list-style: circle;
+  padding-left: 1em;
+  margin-left: 0;
+  color: hsl(var(--foreground));
+}
+
+li {
+  display: block;
+  margin: 0.2em 8px;
+  color: hsl(var(--foreground));
+}
+
+/* ==================== 脚注 ==================== */
+/* footnotes 在 buildFootnotes() 中渲染为 <p> 标签 */
+p.footnotes {
+  margin: 0.5em 8px;
+  font-size: 80%;
+  color: hsl(var(--foreground));
+}
+
+/* ==================== 图表 ==================== */
+figure {
+  margin: 1.5em 8px;
+  color: hsl(var(--foreground));
+}
+
+figcaption,
+.md-figcaption {
+  text-align: center;
+  color: #888;
+  font-size: 0.8em;
+}
+
+/* ==================== 分隔线 ==================== */
+hr {
+  border-style: solid;
+  border-width: 2px 0 0;
+  border-color: rgba(0, 0, 0, 0.1);
+  -webkit-transform-origin: 0 0;
+  -webkit-transform: scale(1, 0.5);
+  transform-origin: 0 0;
+  transform: scale(1, 0.5);
+  height: 0.4em;
+  margin: 1.5em 0;
+}
+
+/* ==================== 行内代码 ==================== */
+code {
+  font-size: 90%;
+  color: #d14;
+  background: rgba(27, 31, 35, 0.05);
+  padding: 3px 5px;
+  border-radius: 4px;
+}
+
+/* 代码块内的 code 标签需要特殊处理（覆盖行内 code 样式） */
+pre.code__pre > code,
+.hljs.code__pre > code {
+  display: -webkit-box;
+  padding: 0.5em 1em 1em;
+  overflow-x: auto;
+  text-indent: 0;
+  color: inherit;
+  background: none;
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* ==================== 强调 ==================== */
+em {
+  font-style: italic;
+  font-size: inherit;
+}
+
+/* ==================== 链接 ==================== */
+a {
+  color: #576b95;
+  text-decoration: none;
+}
+
+/* ==================== 粗体 ==================== */
+strong {
+  color: var(--md-primary-color);
+  font-weight: bold;
+  font-size: inherit;
+}
+
+/* ==================== 表格 ==================== */
+table {
+  color: hsl(var(--foreground));
+}
+
+thead {
+  font-weight: bold;
+  color: hsl(var(--foreground));
+}
+
+th {
+  border: 1px solid #dfdfdf;
+  padding: 0.25em 0.5em;
+  color: hsl(var(--foreground));
+  word-break: keep-all;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+td {
+  border: 1px solid #dfdfdf;
+  padding: 0.25em 0.5em;
+  color: hsl(var(--foreground));
+  word-break: keep-all;
+}
+
+/* ==================== KaTeX 公式 ==================== */
+.katex-inline {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.katex-block {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5em 0;
+  text-align: center;
+}
+
+/* ==================== 标记高亮 ==================== */
+.markup-highlight {
+  background-color: var(--md-primary-color);
+  padding: 2px 4px;
+  border-radius: 2px;
+  color: #fff;
+}
+
+.markup-underline {
+  text-decoration: underline;
+  text-decoration-color: var(--md-primary-color);
+}
+
+.markup-wavyline {
+  text-decoration: underline wavy;
+  text-decoration-color: var(--md-primary-color);
+  text-decoration-thickness: 2px;
+}
