@@ -49,6 +49,7 @@ function markdownToHtml(md) {
     const hasNeon = alt.includes('|neon');
     const hasVintage = alt.includes('|vintage');
     const hasTv = alt.includes('|tv');
+    const hasStamp = alt.includes('|stamp');
     const hasCaption = alt.includes('|caption');
     if (hasBorder) alt = alt.replace(/\|border/g, '').trim();
     if (hasShadow) alt = alt.replace(/\|shadow/g, '').trim();
@@ -62,11 +63,32 @@ function markdownToHtml(md) {
     if (hasNeon) alt = alt.replace(/\|neon/g, '').trim();
     if (hasVintage) alt = alt.replace(/\|vintage/g, '').trim();
     if (hasTv) alt = alt.replace(/\|tv/g, '').trim();
+    if (hasStamp) alt = alt.replace(/\|stamp/g, '').trim();
     if (hasCaption) alt = alt.replace(/\|caption/g, '').trim();
     const title = token.attrGet('title') || '';
     const titleAttr = title ? ' title="'+title+'"' : '';
 
-    if (hasTv) {
+
+    // stamp 邮票边框
+    if (hasStamp) {
+      const stampName = alt || 'CHINA MAIL';
+      const stampCountry = '中国邮政';
+      const stampBg = hasShadow ? '#f5f0e6' : '#f8f4ec';
+      return '<div style="display:inline-block;max-width:100%;margin:1.5em auto;padding:0;">' +
+        '<div style="background:'+stampBg+';border:2px solid #c8a96e;border-radius:2px;padding:8px;position:relative;">' +
+        '<div style="position:absolute;top:8px;left:8px;right:8px;bottom:8px;border:1px dashed #c8a96e;"></div>' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;">' +
+        '<span style="font-size:10px;color:#8b7355;font-family:Georgia,serif;">&#9679; ' + stampCountry + '</span>' +
+        '<span style="font-size:9px;color:#8b7355;font-family:Arial,sans-serif;">' + stampName + ' &#x2605;&#x2605;&#x2605;&#x2605;&#x2605;</span>' +
+        '</div>' +
+        '<img src="'+src+'" alt="'+alt+'"'+titleAttr+' style="display:block;max-width:100%;border-radius:2px;">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">' +
+        '<span style="font-size:9px;color:#8b7355;font-family:Arial,sans-serif;">' + stampName + '</span>' +
+        '<span style="font-size:9px;color:#8b7355;font-family:Georgia,serif;">' + stampCountry + '</span>' +
+        '</div></div></div>';
+      return stampBranch;
+    }
+        if (hasTv) {
       // 复古电视机
       const tvName = alt || 'CRT TV';
       const tvShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.4)' : 'box-shadow:0 4px 16px rgba(0,0,0,0.25)';
