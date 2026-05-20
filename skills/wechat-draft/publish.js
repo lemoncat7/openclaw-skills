@@ -37,6 +37,7 @@ function imgRule(tokens, idx) {
   const Np = alt.includes('|newspaper');
   const G = alt.includes('|grayscale');
   const Gl = alt.includes('|glass');
+  const Tp = alt.includes('|tape');
   const Fl = alt.includes('|float');
   const Gr = alt.includes('|gradient');
   const Cp = alt.includes('|caption');
@@ -49,6 +50,21 @@ function imgRule(tokens, idx) {
           .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|caption/g,'').trim();
   const title = t.attrGet('title') || '';
   const ta = title ? ' title="' + title + '"' : '';
+
+  if (Tp) {
+    const tpAlt = alt || 'Diary';
+    const tpPad = S ? 'padding:12px 14px 24px' : 'padding:8px 10px 18px';
+    const tpSd = S ? 'box-shadow:3px 5px 15px rgba(0,0,0,0.2)' : 'box-shadow:2px 3px 8px rgba(0,0,0,0.12)';
+    const tapes = [
+      {color:'rgba(255,230,120,0.75)', w:48, top:'-6px', left:'30%', rot:'-4deg'},
+      {color:'rgba(180,200,255,0.65)', w:40, top:'-6px', left:'58%', rot:'3deg'},
+    ];
+    const tapeHtml = tapes.map(t => '<div style="position:absolute;top:'+t.top+';left:'+t.left+';width:'+t.w+'px;height:18px;background:'+t.color+';transform:rotate('+t.rot+');box-shadow:0 1px 2px rgba(0,0,0,0.15)"></div>').join('');
+    return '<div style="display:block;max-width:100%;margin:1.5em auto;position:relative;' + tpSd + '">' +
+           tapeHtml +
+           '<div style="background:#fffef5;padding:'+tpPad+';border-radius:2px;border:1px solid rgba(0,0,0,0.06)">' +
+           '<img src="'+src+'" alt="'+tpAlt+'"'+ta+' style="display:block;width:100%;border-radius:3px;filter:contrast(1.03) brightness(1.02)"></div></div>';
+  }
 
   if (Gl) {
     const glAlt = alt || 'Glass Card';
