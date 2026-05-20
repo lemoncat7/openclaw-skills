@@ -39,6 +39,7 @@ function imgRule(tokens, idx) {
   const Gl = alt.includes('|glass');
   const Tp = alt.includes('|tape');
   const Bk = alt.includes('|bookpage');
+  const Cm = alt.includes('|comic');
   const Fl = alt.includes('|float');
   const Gr = alt.includes('|gradient');
   const Cp = alt.includes('|caption');
@@ -77,6 +78,15 @@ function imgRule(tokens, idx) {
            '<img src="'+src+'" alt="'+bkAlt+'"'+ta+' style="display:block;width:100%;border-radius:2px;filter:sepia(0.08) contrast(1.05)"></div></div>';
   }
 
+
+  if (Cm) {
+    const cmTxt = alt || 'POW!';
+    const cmSd = S ? 'box-shadow:6px 6px 0 #1a1a1a' : '';
+    return '<div style="display:block;max-width:100%;margin:1.5em auto;position:relative">' +
+           '<div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#ffe500;border:3px solid #1a1a1a;padding:2px 12px;font-family:Bangers,Impact, fantasy;font-size:22px;font-weight:bold;color:#1a1a1a;text-align:center;z-index:2;box-shadow:3px 3px 0 #1a1a1a;line-height:1.2">' + cmTxt + '</div>' +
+           '<div style="background:#fff;border:4px solid #1a1a1a;border-radius:4px;margin-top:20px;padding:20px;' + cmSd + '">' +
+           '<img src="'+src+'" alt="'+cmTxt+'"'+ta+' style="display:block;width:100%;border-radius:2px"></div></div>';
+  }
 
   if (Gl) {
     const glAlt = alt || 'Glass Card';
