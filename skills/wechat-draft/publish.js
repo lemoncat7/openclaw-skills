@@ -8,11 +8,105 @@ const APPID = CONFIG.WECHAT_APP_ID;
 const APPSECRET = CONFIG.WECHAT_APP_SECRET;
 const SKILL_DIR = path.join(process.env.HOME, '.openclaw/workspace/skills/wechat-draft');
 
+// Video rendering: ::video::{media_id}|{style}::  e.g. ::video::mxpV0AXNYSZzy0q8ZtsU|tv::
+function renderVideo(token) {
+  const src = token.attrGet('src') || '';
+  // src format: ::video::{media_id}|{style}::
+  const m = src.match(/::video::([^|]+)\|(\w+)::/);
+  if (!m) return false;
+  const [, mediaId, style] = m;
+  const thumb = token.attrGet('title') || mediaId;
+  const plays = {tv:'📺 RETRO TV',monitor:'🖥️ MONITOR',cinema:'🎬 NOW PLAYING',polaroid:'📸 captured moment',film:'🎞️ FRAME 024',neon:'💫 PLAY',tablet:'📱 TABLET',gameboy:'🎮 GAME BOY'};
+  const playLabel = plays[style] || '▶ PLAY';
+
+  if (style === 'tv') {
+    return '<div style="display:block;max-width:280px;margin:1.5em auto">' +
+      '<div style="background:#2d2d2d;border-radius:16px 16px 0 0;padding:8px 12px;display:flex;align-items:center;justify-content:space-between">' +
+      '<div style="display:flex;gap:6px"><div style="width:14px;height:14px;border-radius:50%;background:#cc2222;box-shadow:inset 0 -2px 4px rgba(0,0,0,0.3)"></div><div style="width:14px;height:14px;border-radius:50%;background:#1e8f23;box-shadow:inset 0 -2px 4px rgba(0,0,0,0.3)"></div></div>' +
+      '<div style="width:20px;height:14px;background:#1a1a1a;border:1px solid #444;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#888">|</div></div>' +
+      '<div style="background:#111;border-radius:0 0 8px 8px;overflow:hidden;border:3px solid #2d2d2d;border-top:none">' +
+      '<div style="position:relative;padding-top:56.25%;background:#000">' +
+      '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">' +
+      '<div style="width:48px;height:48px;background:rgba(255,255,255,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px">▶</div></div></div></div>' +
+      '<div style="padding:4px 8px;background:#2d2d2d;text-align:center;font-size:10px;color:#888;font-family:monospace">' + playLabel + '</div></div>';
+  }
+  if (style === 'monitor') {
+    return '<div style="display:block;max-width:360px;margin:1.5em auto;background:#1e1e1e;border-radius:12px;overflow:hidden;border:1px solid #333;box-shadow:0 8px 32px rgba(0,0,0,0.4)">' +
+      '<div style="background:#2a2a2a;padding:8px 12px;border-bottom:1px solid #333;text-align:center;font-size:11px;color:#666;font-family:monospace">Modern Display</div>' +
+      '<div style="position:relative;padding-top:56.25%;background:#000"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">' +
+      '<div style="width:56px;height:56px;background:rgba(59,130,246,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px">▶</div></div></div></div>';
+  }
+  if (style === 'cinema') {
+    return '<div style="display:block;max-width:100%;margin:1.5em auto;background:#000;padding:12px;border-radius:4px;box-shadow:0 8px 32px rgba(0,0,0,0.5)">' +
+      '<div style="background:#111;border:2px solid #333;border-radius:4px;padding:8px;margin-bottom:8px;text-align:center"><span style="color:#ffd700;font-size:16px;font-family:Georgia,serif">' + playLabel + '</span></div>' +
+      '<div style="position:relative;padding-top:56.25%;background:#000;border-radius:4px;overflow:hidden"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">' +
+      '<div style="width:64px;height:64px;background:rgba(255,215,0,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px">▶</div></div></div></div>';
+  }
+  if (style === 'polaroid') {
+    return '<div style="display:inline-block;max-width:240px;margin:1em;padding:10px 10px 32px;background:#fff;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,0.3)">' +
+      '<div style="background:#000;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;border-radius:2px;margin-bottom:12px">' +
+      '<div style="width:40px;height:40px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px">▶</div></div>' +
+      '<p style="text-align:center;color:#666;font-size:12px;font-family:-apple-system,sans-serif;margin:0">' + playLabel + '</p></div>';
+  }
+  if (style === 'film') {
+    return '<div style="display:block;max-width:100%;margin:1.5em auto;background:#1a1a1a;padding:6px;border-radius:4px;box-shadow:0 8px 30px rgba(0,0,0,0.5)">' +
+      '<div style="background:#000;padding:4px;border-radius:2px;margin-bottom:4px"><div style="aspect-ratio:16/9;display:flex;align-items:center;justify-content:center">' +
+      '<div style="width:40px;height:40px;background:rgba(255,255,255,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px">▶</div></div></div>' +
+      '<p style="color:#aaa;font-size:11px;text-align:center;font-family:monospace;letter-spacing:2px;margin:4px 0 0">' + playLabel + '</p></div>';
+  }
+  if (style === 'neon') {
+    return '<div style="display:block;max-width:100%;margin:1.5em auto;padding:3px;background:linear-gradient(135deg,#0ff,#f0f,#ff0);border-radius:12px;box-shadow:0 0 15px #0ff,0 0 30px #f0f,0 0 45px #ff0">' +
+      '<div style="background:#111;padding:4px;border-radius:10px">' +
+      '<div style="aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;border-radius:6px;background:#000;margin-bottom:6px">' +
+      '<div style="width:48px;height:48px;background:linear-gradient(135deg,#0ff,#f0f);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;color:#000">▶</div></div>' +
+      '<p style="text-align:center;color:#0ff;font-size:11px;margin:0;font-family:monospace;letter-spacing:2px;text-shadow:0 0 8px #0ff">' + playLabel + '</p></div></div>';
+  }
+  if (style === 'tablet') {
+    return '<div style="display:block;max-width:400px;margin:1.5em auto;background:#1e293b;padding:12px 12px 20px;border-radius:24px;box-shadow:0 8px 32px rgba(0,0,0,0.4)">' +
+      '<div style="width:60px;height:4px;background:#334155;border-radius:4px;margin:0 auto 12px"></div>' +
+      '<div style="aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center">' +
+      '<div style="width:48px;height:48px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px">▶</div></div></div>';
+  }
+  if (style === 'gameboy') {
+    return '<div style="display:block;max-width:220px;margin:1.5em auto;background:#c0c0c0;padding:16px;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,0.3);border:2px solid #888">' +
+      '<div style="background:#8bac0f;padding:12px;border-radius:8px;margin-bottom:8px">' +
+      '<div style="aspect-ratio:4/3;background:#9bbc0f;display:flex;align-items:center;justify-content:center;border-radius:4px;margin-bottom:8px">' +
+      '<div style="width:32px;height:32px;background:#306230;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#9bbc0f">▶</div></div></div>' +
+      '<div style="text-align:center;font-size:11px;font-family:monospace;color:#333;font-weight:bold;letter-spacing:2px">' + playLabel + '</div></div>';
+  }
+  // default
+  return '<div style="display:block;max-width:100%;margin:1.5em auto;background:#1e1e1e;border-radius:8px;overflow:hidden;text-align:center;padding:20px">' +
+    '<div style="width:56px;height:56px;background:#3b82f6;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:8px">▶</div>' +
+    '<p style="color:#ccc;font-size:12px;margin:0;font-family:monospace">' + playLabel + '</p></div>';
+}
+
 function md2html(md) {
   const mdit = require('/usr/local/lib/node_modules/md2wechat/node_modules/markdown-it')();
   mdit.set({ html: true, linkify: true, typographer: true });
   mdit.renderer.rules.image = imgRule;
   let html = mdit.render(md);
+  // detect and replace ::video:: tokens
+  // detect and replace ::account:: tokens (official account card)
+  html = html.replace(/<p>::account::([^<]+)::<\/p>/g, (match, content) => {
+    const parts = content.split('::');
+    if (parts.length < 2) return match;
+    const accountId = parts[0].trim();
+    const accountName = parts[1] ? parts[1].trim() : accountId;
+    return '<div style="display:flex;align-items:center;max-width:320px;margin:1.5em auto;padding:12px 16px;background:#f0f4f8;border:1px solid #d0d7de;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08)">' +
+      '<div style="width:48px;height:48px;background:linear-gradient(135deg,#1a8cff,#0050b3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0">' +
+      '<span style="color:#fff;font-size:20px;font-weight:bold">' + (accountName[0] || '公').toUpperCase() + '</span></div>' +
+      '<div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:600;color:#1f2328;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + accountName + '</div>' +
+      '<div style="font-size:12px;color:#656d76;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">公众号名片 · 关注</div></div>' +
+      '<div style="width:28px;height:28px;background:#1a8cff;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+      '<span style="color:#fff;font-size:14px">+</span></div></div>';
+  });
+  html = html.replace(/<p>::video::([^<]+)::<\/p>/g, (match, content) => {
+    const m2 = content.match(/([^|]+)\|(\w+)/);
+    if (!m2) return match;
+    const fakeToken = { attrGet: (n) => n === 'src' ? '::video::' + content + '::' : n === 'title' ? m2[1] : null };
+    const r = renderVideo(fakeToken);
+    return r || match;
+  });
   // post-process: group consecutive row images into flex grids
   const rowRe = /<__ROW__([^>]*)>([\s\S]*?)<\/__ROW__>/g;
   let images = [];
