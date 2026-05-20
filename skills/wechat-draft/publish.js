@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 /**
- * Wechat Draft Publisher — 7 种图片效果
- * |border |shadow |rounded |phone |macos |browser
- * 直接调微信 API，不依赖第三方工具
+ * Wechat Draft Publisher
+ * 8 种图片效果：|border |shadow |rounded |phone |macos |browser |terminal |caption
  */
 const { execSync } = require('child_process');
 const fs = require('fs');
@@ -37,7 +36,7 @@ function markdownToHtml(md) {
     }
   });
 
-  // 自定义图片渲染：7 种效果
+  // 8 种图片效果
   const defaultImage = markdownit.renderer.rules.image || function(tokens, idx, options, env, self) { return self.renderToken(tokens, idx, options); };
   markdownit.renderer.rules.image = function(tokens, idx, options, env, self) {
     const token = tokens[idx];
@@ -49,42 +48,60 @@ function markdownToHtml(md) {
     const hasPhone = alt.includes('|phone');
     const hasMacos = alt.includes('|macos');
     const hasBrowser = alt.includes('|browser');
+    const hasTerminal = alt.includes('|terminal');
+    const hasCaption = alt.includes('|caption');
+
     if (hasBorder) alt = alt.replace(/\|border/g, '').trim();
     if (hasShadow) alt = alt.replace(/\|shadow/g, '').trim();
     if (hasRounded) alt = alt.replace(/\|rounded/g, '').trim();
     if (hasPhone) alt = alt.replace(/\|phone/g, '').trim();
     if (hasMacos) alt = alt.replace(/\|macos/g, '').trim();
     if (hasBrowser) alt = alt.replace(/\|browser/g, '').trim();
+    if (hasTerminal) alt = alt.replace(/\|terminal/g, '').trim();
+    if (hasCaption) alt = alt.replace(/\|caption/g, '').trim();
     const title = token.attrGet('title') || '';
     const titleAttr = title ? ` title="${title}"` : '';
-    
-    // 手机边框
-    if (hasPhone) {
-      const phoneShadow = hasShadow ? "box-shadow:0 8px 30px rgba(0,0,0,0.4);" : "box-shadow:0 4px 20px rgba(0,0,0,0.3);";
-      return `<div style="display:block;max-width:320px;margin:1.2em auto;padding:8px 8px 12px;background:#1e293b;border-radius:24px;${phoneShadow}"><div style="width:60px;height:4px;background:#334155;border-radius:4px;margin:0 auto 8px;"></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;border-radius:16px;"/></div>`;
+    const extraShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.4);' : '';
+
+    // terminal 终端窗口
+    if (hasTerminal) {
+      const termPath = alt || '~/code/project';
+      const termUser = 'root';
+      const termHost = 'localhost';
+      return `<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:8px;overflow:hidden;${extraShadow}border:1px solid #2d2d2d;background:#1e1e1e;"><div style="background:#323232;padding:8px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #2d2d2d;"><span style="width:12px;height:12px;border-radius:50%;background:#ff5f56;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#28c940;display:inline-block;"></span><span style="flex:1;"></span><span style="background:#1e1e1e;border:1px solid #4a4a4a;border-radius:4px;padding:3px 10px;color:#ccc;font-size:11px;font-family:Menlo,Monaco,monospace;">${termUser}@${termHost}:${termPath}</span><span style="width:8px;"></span></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;"/></div>`;
     }
-    
+
+    // phone 手机边框
+    if (hasPhone) {
+      const phoneShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.4);' : 'box-shadow:0 4px 20px rgba(0,0,0,0.3);';
+      return `<div style="display:block;max-width:320px;margin:1.2em auto;padding:8px 8px 12px;background:#1e293b;border-radius:24px;${phoneShadow}"><div style="width:60px;height:4px;background:#334155;border-radius:4px;margin:0 auto 8px;"></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;border-radius:16px;"></div>`;
+    }
+
     // macOS 窗口
     if (hasMacos) {
       const macTitle = alt || 'Screenshot';
-      const macShadow = hasShadow ? "0 12px 40px rgba(0,0,0,0.5)" : "0 8px 30px rgba(0,0,0,0.3)";
-      return `<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:10px;overflow:hidden;box-shadow:${macShadow};border:1px solid #2d2d2d;"><div style="background:#2d2d2d;padding:10px 14px;display:flex;align-items:center;gap:8px;"><span style="width:12px;height:12px;border-radius:50%;background:#ff5f57;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#28c840;display:inline-block;"></span><span style="flex:1;text-align:center;color:#999;font-size:12px;font-family:-apple-system,sans-serif;">${macTitle}</span></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;"/></div>`;
+      const macShadow = hasShadow ? '0 12px 40px rgba(0,0,0,0.5)' : '0 8px 30px rgba(0,0,0,0.3)';
+      return `<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:10px;overflow:hidden;box-shadow:${macShadow};border:1px solid #2d2d2d;background:#1e1e1e;"><div style="background:#2d2d2d;padding:10px 14px;display:flex;align-items:center;gap:8px;"><span style="width:12px;height:12px;border-radius:50%;background:#ff5f56;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#28c940;display:inline-block;"></span><span style="flex:1;text-align:center;color:#999;font-size:12px;font-family:-apple-system,sans-serif;">${macTitle}</span></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;"></div>`;
     }
-    
-    // 浏览器窗口
+
+    // browser 浏览器窗口
     if (hasBrowser) {
       const browserUrl = alt || 'https://example.com';
-      const browserShadow = hasShadow ? "0 10px 36px rgba(0,0,0,0.35)" : "0 6px 24px rgba(0,0,0,0.25)";
-      return `<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:8px;overflow:hidden;box-shadow:${browserShadow};border:1px solid #d1d5db;"><div style="background:#f3f4f6;padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #d1d5db;"><span style="font-size:14px;">🔒</span><span style="flex:1;color:#6b7280;font-size:12px;font-family:-apple-system,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${browserUrl}</span></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;"/></div>`;
+      const browserShadow = hasShadow ? '0 10px 36px rgba(0,0,0,0.35)' : '0 6px 24px rgba(0,0,0,0.25)';
+      return `<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:8px;overflow:hidden;box-shadow:${browserShadow};border:1px solid #d1d5db;background:#fff;"><div style="background:#f3f4f6;padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #d1d5db;"><span style="font-size:14px;">🔒</span><span style="flex:1;color:#6b7280;font-size:12px;font-family:-apple-system,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${browserUrl}</span></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;"></div>`;
     }
-    
+
     // 普通效果
     let style = 'display:block;max-width:100%;margin:1.2em auto;';
     if (hasRounded) style += 'border-radius:50%;';
     else style += 'border-radius:8px;';
     if (hasBorder) style += 'border:2px solid var(--el-border);';
     if (hasShadow) style += 'box-shadow:0 4px 20px rgba(0,0,0,0.4);';
-    return `<img src="${src}" alt="${alt}"${titleAttr} style="${style}"/>`;
+    if (hasCaption) {
+      const captionText = alt || '';
+      return `<figure style="margin:1.2em auto;"><img src="${src}" alt="${alt}"${titleAttr} style="${style}"></figure><figcaption style="text-align:center;color:var(--el-muted);font-size:80%;margin-top:0.4em;font-style:italic;">${captionText}</figcaption>`;
+    }
+    return `<img src="${src}" alt="${alt}"${titleAttr} style="${style}">`;
   };
 
   return markdownit.render(md);
@@ -105,7 +122,6 @@ function resolveCssVars(css, vars) {
 function applyCss(html, theme) {
   const baseCss = fs.readFileSync(path.join(SKILL_DIR, 'base.css'), 'utf8');
   const themeCss = fs.readFileSync(path.join(SKILL_DIR, theme + '.css'), 'utf8');
-
   const vars = {
     '--md-primary-color': '#1a56db',
     '--md-font-family': 'Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, "PingFang SC", Cambria, Georgia, Times, "Times New Roman", serif',
@@ -117,10 +133,8 @@ function applyCss(html, theme) {
     '--el-accent': '#3b82f6', '--el-green': '#10b981', '--el-red': '#ef4444',
     '--el-yellow': '#f59e0b', '--el-purple': '#8b5cf6',
   };
-
   let css = resolveCssVars(baseCss + '\n' + themeCss, vars);
   css = css.replace(/\/\*[\s\S]*?\*\//g, '');
-
   const selectorMap = {};
   const ruleRe = /([^{]+)\{([^}]+)\}/g;
   let m;
@@ -130,7 +144,6 @@ function applyCss(html, theme) {
     if (!selectorMap[sel]) selectorMap[sel] = [];
     selectorMap[sel].push(props);
   }
-
   let result = html;
   const tags = ['p','h1','h2','h3','h4','h5','h6','blockquote','code','pre','a','strong','em','hr','ul','ol','li','img','table','th','td','figure','figcaption','section'];
   for (const tag of tags) {
@@ -143,7 +156,6 @@ function applyCss(html, theme) {
       return `<${tag}${before} style="${combinedProps}"${after}>`;
     });
   }
-
   return result;
 }
 
@@ -152,13 +164,11 @@ async function publishDraft({ title, author, digest, coverPath, mdPath, theme })
   const token = JSON.parse(
     execSync('curl -s "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + APPID + '&secret=' + APPSECRET + '"')
   ).access_token;
-
   console.log('2. 压缩封面...');
   const sharp = require('/usr/local/lib/node_modules/kuaifa/node_modules/sharp');
   const thumbPath = '/tmp/wechat-thumb.jpg';
   await sharp(coverPath).resize(300, 300, { fit: 'inside' }).jpeg({ quality: 80 }).toFile(thumbPath);
   console.log('   封面: ' + (fs.statSync(thumbPath).size / 1024).toFixed(1) + 'KB');
-
   console.log('3. 上传封面...');
   const thumbRes = execSync('curl -s -F media=@' + thumbPath + ' "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=' + token + '&type=thumb"');
   const thumbData = JSON.parse(thumbRes);
@@ -167,13 +177,11 @@ async function publishDraft({ title, author, digest, coverPath, mdPath, theme })
     return { errcode: -1, errmsg: JSON.stringify(thumbData) };
   }
   console.log('   thumb_media_id: ' + thumbData.media_id);
-
-  console.log('4. Markdown -> HTML (theme: ' + theme + ')...');
+  console.log('4. Markdown -> HTML...');
   const md = fs.readFileSync(mdPath, 'utf8');
   const rawHtml = markdownToHtml(md);
   const content = applyCss(rawHtml, theme);
   console.log('   HTML 长度: ' + content.length);
-
   console.log('5. 创建草稿...');
   const payload = {
     articles: [{
@@ -211,7 +219,7 @@ if (require.main === module) {
   if (!mdPath || !coverPath || !title) {
     console.log('用法: node publish.js [--theme elegant] <article.md> <cover.png> <title> [digest]');
     console.log('主题: default, grace, simple, elegant');
-    console.log('图片: |border |shadow |rounded |phone |macos |browser');
+    console.log('效果: |border |shadow |rounded |phone |macos |browser |terminal |caption');
     process.exit(1);
   }
   publishDraft({ mdPath, coverPath, title, digest: digest || '', theme })
