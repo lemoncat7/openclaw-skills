@@ -48,6 +48,7 @@ function markdownToHtml(md) {
     const hasPhone = alt.includes('|phone');
     const hasMacos = alt.includes('|macos');
     const hasBrowser = alt.includes('|browser');
+    const hasPolaroid = alt.includes('|polaroid');
     const hasTerminal = alt.includes('|terminal');
     const hasCaption = alt.includes('|caption');
 
@@ -57,11 +58,13 @@ function markdownToHtml(md) {
     if (hasPhone) alt = alt.replace(/\|phone/g, '').trim();
     if (hasMacos) alt = alt.replace(/\|macos/g, '').trim();
     if (hasBrowser) alt = alt.replace(/\|browser/g, '').trim();
+    if (hasPolaroid) alt = alt.replace(/\|polaroid/g, '').trim();
     if (hasTerminal) alt = alt.replace(/\|terminal/g, '').trim();
     if (hasCaption) alt = alt.replace(/\|caption/g, '').trim();
     const title = token.attrGet('title') || '';
     const titleAttr = title ? ` title="${title}"` : '';
     const extraShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.4);' : '';
+    const polaroidShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.35)' : 'box-shadow:0 4px 16px rgba(0,0,0,0.2)';
 
     // terminal 终端窗口
     if (hasTerminal) {
