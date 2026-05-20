@@ -40,6 +40,7 @@ function imgRule(tokens, idx) {
   const Tp = alt.includes('|tape');
   const Bk = alt.includes('|bookpage');
   const Cm = alt.includes('|comic');
+  const Tk = alt.includes('|ticket');
   const Fl = alt.includes('|float');
   const Gr = alt.includes('|gradient');
   const Cp = alt.includes('|caption');
@@ -49,7 +50,7 @@ function imgRule(tokens, idx) {
           .replace(/\|neon/g,'').replace(/\|vintage/g,'').replace(/\|tv/g,'')
           .replace(/\|code/g,'').replace(/\|note/g,'').replace(/\|ipad/g,'')
           .replace(/\|newspaper/g,'').replace(/\|grayscale/g,'').replace(/\|float/g,'')
-          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|tape/g,'').replace(/\|bookpage/g,'').replace(/\|caption/g,'').trim();
+          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|tape/g,'').replace(/\|bookpage/g,'').replace(/\|comic/g,'').replace(/\|ticket/g,'').replace(/\|caption/g,'').trim();
   const title = t.attrGet('title') || '';
   const ta = title ? ' title="' + title + '"' : '';
 
@@ -78,6 +79,24 @@ function imgRule(tokens, idx) {
            '<img src="'+src+'" alt="'+bkAlt+'"'+ta+' style="display:block;width:100%;border-radius:2px;filter:sepia(0.08) contrast(1.05)"></div></div>';
   }
 
+
+  if (Tk) {
+    const tkTxt = alt || 'MOVIE TICKET';
+    const tkSd = S ? 'box-shadow:4px 4px 16px rgba(0,0,0,0.3)' : 'box-shadow:2px 2px 8px rgba(0,0,0,0.2)';
+    return '<div style="display:block;max-width:320px;margin:1.5em auto;background:#f5e6c8;border:2px dashed #8b7355;border-radius:4px;position:relative;overflow:hidden;' + tkSd + '">' +
+           '<div style="display:flex;align-items:stretch">' +
+           '<div style="flex:1;padding:12px 14px">' +
+           '<div style="font-family:sans-serif;font-size:10px;color:#8b7355;letter-spacing:1px;margin-bottom:4px">ADMIT ONE</div>' +
+           '<div style="font-family:sans-serif;font-size:17px;font-weight:bold;color:#333;line-height:1.1;margin-bottom:8px">' + tkTxt + '</div>' +
+           '<div style="font-family:monospace;font-size:10px;color:#666">DATE: 2026.05.20<br/>SEAT: VIP</div></div>' +
+           '<div style="width:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-left:2px dashed #8b7355;padding:8px 4px">' +
+           '<div style="width:8px;height:8px;background:#8b7355;border-radius:50%;margin-bottom:4px"></div>' +
+           '<div style="width:2px;height:100%;background:repeating-linear-gradient(to bottom,#f5e6c8 0px,#f5e6c8 4px,#8b7355 4px,#8b7355 8px)"></div>' +
+           '<div style="width:8px;height:8px;background:#8b7355;border-radius:50%;margin-top:4px"></div></div>' +
+           '<div style="flex:1;padding:12px 14px;text-align:center">' +
+           '<div style="font-size:20px;color:#c0392b">&hearts;</div>' +
+           '<div style="font-family:monospace;font-size:10px;color:#8b7355;margin-top:4px">NO.2026052001</div></div></div></div>';
+  }
 
   if (Cm) {
     const cmTxt = alt || 'POW!';
