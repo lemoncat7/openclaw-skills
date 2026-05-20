@@ -119,6 +119,7 @@ function imgRule(tokens, idx) {
   const Gy = alt.includes('|gallery3');
   const G2 = alt.includes('|gallery2');
   const Cs = alt.includes('|cascade');
+  const Au = alt.includes('|auto');
   const Co = alt.includes('|compare');
   const Ms = alt.includes('|masonry');
   const Ft = alt.includes('|featured');
