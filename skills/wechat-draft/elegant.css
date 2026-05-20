@@ -3,20 +3,7 @@
  * 深色科技风，高对比度，emoji 标题，微信草稿箱专用
  */
 
-/* ==================== 基础变量 ==================== */
-:root {
-  --el-primary: #1a56db;
-  --el-bg: #0f172a;
-  --el-surface: #1e293b;
-  --el-border: #334155;
-  --el-text: #1a1a2e;
-  --el-muted: #64748b;
-  --el-accent: #3b82f6;
-  --el-green: #10b981;
-  --el-red: #ef4444;
-  --el-yellow: #f59e0b;
-  --el-purple: #8b5cf6;
-}
+/* CSS variables removed - using base.css defaults */
 
 /* ==================== 标题样式 ==================== */
 
@@ -25,8 +12,8 @@ h1 {
   font-size: calc(var(--md-font-size) * 1.3);
   font-weight: bold;
   text-align: left;
-  color: var(--el-text);
-  border-bottom: 2px solid var(--el-accent);
+  color: var(--md-primary-color);
+  border-bottom: 2px solid var(--md-primary-color);
   padding-bottom: 0.4em;
   margin: 1.8em 0 1em;
   letter-spacing: 0.02em;
@@ -40,7 +27,7 @@ h2 {
   font-size: calc(var(--md-font-size) * 1.15);
   font-weight: bold;
   color: #fff;
-  background: linear-gradient(135deg, var(--el-primary), var(--el-accent));
+  background: linear-gradient(135deg, var(--md-primary-color), var(--md-primary-color));
   margin: 2em 0 1em;
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
   letter-spacing: 0.03em;
@@ -49,12 +36,12 @@ h2 {
 /* H3：左侧竖线 + 背景色 */
 h3 {
   padding: 0.4em 0.8em;
-  border-left: 4px solid var(--el-accent);
+  border-left: 4px solid var(--md-primary-color);
   background: rgba(59, 130, 246, 0.1);
   border-radius: 0 6px 6px 0;
   font-size: calc(var(--md-font-size) * 1.08);
   font-weight: bold;
-  color: var(--el-accent);
+  color: var(--md-primary-color);
   margin: 1.5em 0 0.8em;
 }
 
@@ -62,8 +49,8 @@ h3 {
 h4 {
   font-size: calc(var(--md-font-size) * 1.02);
   font-weight: bold;
-  color: var(--el-text);
-  border-bottom: 1px solid var(--el-border);
+  color: var(--md-primary-color);
+  border-bottom: 1px solid var(--md-primary-color);
   padding-bottom: 0.2em;
   margin: 1.2em 0 0.6em;
 }
@@ -71,7 +58,7 @@ h4 {
 h5, h6 {
   font-size: var(--md-font-size);
   font-weight: bold;
-  color: var(--el-muted);
+  color: hsl(var(--foreground));
   margin: 1em 0 0.5em;
 }
 
@@ -79,7 +66,7 @@ h5, h6 {
 p {
   margin: 1em 0;
   line-height: 1.9;
-  color: var(--el-text);
+  color: var(--md-primary-color);
 }
 
 /* ==================== 引用块 ==================== */
@@ -88,8 +75,8 @@ blockquote {
   padding: 0.8em 1em 0.8em 2.5em;
   border-radius: 8px;
   background: rgba(59, 130, 246, 0.08);
-  border-left: 3px solid var(--el-accent);
-  color: var(--el-text);
+  border-left: 3px solid var(--md-primary-color);
+  color: var(--md-primary-color);
   margin: 1.2em 0;
 }
 
@@ -103,7 +90,7 @@ blockquote::before {
 
 blockquote > p {
   margin: 0;
-  color: var(--el-text);
+  color: var(--md-primary-color);
   font-style: normal;
   line-height: 1.8;
 }
@@ -162,7 +149,7 @@ ul > li {
   position: relative;
   padding-left: 1.6em;
   margin: 0.35em 0;
-  color: var(--el-text);
+  color: var(--md-primary-color);
   line-height: 1.8;
 }
 
@@ -171,7 +158,7 @@ ul > li::before {
   position: absolute;
   left: 0;
   top: 0.05em;
-  color: var(--el-accent);
+  color: var(--md-primary-color);
   font-size: 0.9em;
 }
 
@@ -187,7 +174,7 @@ ol > li {
   position: relative;
   padding-left: 1em;
   margin: 0.35em 0;
-  color: var(--el-text);
+  color: var(--md-primary-color);
   line-height: 1.8;
 }
 
@@ -195,7 +182,7 @@ ol > li::before {
   content: counter(ol-counter) '.';
   position: absolute;
   left: -0.5em;
-  color: var(--el-accent);
+  color: var(--md-primary-color);
   font-weight: bold;
 }
 
@@ -209,7 +196,7 @@ section:has(table) {
   -webkit-overflow-scrolling: touch;
   border-radius: 8px;
   margin: 1.5em 0;
-  border: 1px solid var(--el-border);
+  border: 1px solid var(--md-primary-color);
 }
 
 table {
@@ -234,10 +221,10 @@ th {
 }
 
 td {
-  color: var(--el-text) !important;
+  color: var(--md-primary-color) !important;
   padding: 0.55em 1em;
   border: none !important;
-  border-bottom: 1px solid var(--el-border) !important;
+  border-bottom: 1px solid var(--md-primary-color) !important;
 }
 
 tr:nth-child(even) td {
@@ -268,7 +255,7 @@ figure {
 
 figcaption {
   text-align: center;
-  color: var(--el-muted);
+  color: hsl(var(--foreground));
   font-size: 80%;
   margin-top: 0.4em;
 }
@@ -277,20 +264,20 @@ figcaption {
 hr {
   border: none;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--el-accent) 30%, var(--el-accent) 70%, transparent);
+  background: linear-gradient(90deg, transparent, var(--md-primary-color) 30%, var(--md-primary-color) 70%, transparent);
   opacity: 0.4;
   margin: 2.5em auto;
 }
 
 /* ==================== 链接 ==================== */
 a {
-  color: var(--el-accent);
+  color: var(--md-primary-color);
   text-decoration: none;
   border-bottom: 1px solid rgba(59, 130, 246, 0.4);
 }
 
 a:hover {
-  border-bottom-color: var(--el-accent);
+  border-bottom-color: var(--md-primary-color);
 }
 
 /* ==================== 强调 ==================== */
@@ -300,7 +287,7 @@ strong {
 }
 
 em {
-  color: var(--el-text);
+  color: var(--md-primary-color);
   font-style: italic;
 }
 
