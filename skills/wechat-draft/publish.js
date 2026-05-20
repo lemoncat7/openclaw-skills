@@ -44,6 +44,7 @@ function imgRule(tokens, idx) {
   const Bl = alt.includes('|blueprint');
   const Cd = alt.includes('|card');
   const Wc = alt.includes('|watercolor');
+  const Sl = alt.includes('|slim');
   const Fl = alt.includes('|float');
   const Gr = alt.includes('|gradient');
   const Cp = alt.includes('|caption');
