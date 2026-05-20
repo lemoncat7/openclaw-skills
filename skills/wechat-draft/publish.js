@@ -41,6 +41,7 @@ function imgRule(tokens, idx) {
   const Bk = alt.includes('|bookpage');
   const Cm = alt.includes('|comic');
   const Tk = alt.includes('|ticket');
+  const Bl = alt.includes('|blueprint');
   const Fl = alt.includes('|float');
   const Gr = alt.includes('|gradient');
   const Cp = alt.includes('|caption');
@@ -77,6 +78,23 @@ function imgRule(tokens, idx) {
            '<div style="margin-left:14px;padding:14px 0 0">' +
            '<p style="font-family:Baskerville,Georgia,serif;font-size:13px;line-height:2;color:#4a3728;margin:0 0 6px;border-bottom:1px solid rgba(139,90,43,0.2);padding-bottom:6px">&#x1F4D6; ' + bkAlt + '</p>' +
            '<img src="'+src+'" alt="'+bkAlt+'"'+ta+' style="display:block;width:100%;border-radius:2px;filter:sepia(0.08) contrast(1.05)"></div></div>';
+  }
+
+
+  if (Bl) {
+    const blTxt = alt || 'ARCHITECTURAL DRAWING';
+    const blSd = S ? 'box-shadow:4px 4px 20px rgba(0,0,0,0.4)' : '';
+    return '<div style="display:block;max-width:100%;margin:1.5em auto;background:#1a3a5c;padding:20px;border:2px solid #4a90d9;border-radius:4px;' + blSd + '">' +
+           '<div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #4a90d9;padding-bottom:8px;margin-bottom:12px">' +
+           '<span style="font-family:monospace;font-size:11px;color:#7eb8e8;letter-spacing:1px">SCALE 1:1</span>' +
+           '<span style="font-family:monospace;font-size:14px;font-weight:bold;color:#fff;letter-spacing:2px">&#x25CB; REV.A</span>' +
+           '<span style="font-family:monospace;font-size:11px;color:#7eb8e8;letter-spacing:1px">DWG: 001</span></div>' +
+           '<div style="position:relative;background:#0f2a45;border:1px solid #2a5a8a;border-radius:2px">' +
+           '<div style="position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 19px,#1a3a5c 19px,#1a3a5c 20px),repeating-linear-gradient(90deg,transparent,transparent 19px,#1a3a5c 19px,#1a3a5c 20px);opacity:0.6;pointer-events:none"></div>' +
+           '<img src="'+src+'" alt="'+blTxt+'"'+ta+' style="display:block;width:100%;border-radius:2px;opacity:0.9"></div>' +
+           '<div style="display:flex;justify-content:space-between;margin-top:10px">' +
+           '<span style="font-family:monospace;font-size:10px;color:#7eb8e8">' + blTxt + '</span>' +
+           '<span style="font-family:monospace;font-size:10px;color:#7eb8e8">UNIT: mm</span></div></div>';
   }
 
 
