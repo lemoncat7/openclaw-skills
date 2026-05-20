@@ -51,6 +51,7 @@ function markdownToHtml(md) {
     const hasPolaroid = alt.includes('|polaroid');
     const hasFilm = alt.includes('|film');
     const hasNeon = alt.includes('|neon');
+    const hasVintage = alt.includes('|vintage');
     const hasTerminal = alt.includes('|terminal');
     const hasCaption = alt.includes('|caption');
 
@@ -63,6 +64,7 @@ function markdownToHtml(md) {
     if (hasPolaroid) alt = alt.replace(/\|polaroid/g, '').trim();
     if (hasFilm) alt = alt.replace(/\|film/g, '').trim();
     if (hasNeon) alt = alt.replace(/\|neon/g, '').trim();
+    if (hasVintage) alt = alt.replace(/\|vintage/g, '').trim();
     if (hasTerminal) alt = alt.replace(/\|terminal/g, '').trim();
     if (hasCaption) alt = alt.replace(/\|caption/g, '').trim();
     const title = token.attrGet('title') || '';
@@ -70,7 +72,8 @@ function markdownToHtml(md) {
     const extraShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.4);' : '';
     const polaroidShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.35)' : 'box-shadow:0 4px 16px rgba(0,0,0,0.2)';
     const filmShadow = hasShadow ? 'box-shadow:0 8px 30px rgba(0,0,0,0.5)' : 'box-shadow:0 6px 24px rgba(0,0,0,0.3)';
-    const neonShadow = hasShadow ? 'box-shadow:0 0 15px #0ff, 0 0 30px #f0f, 0 0 45px #ff0, 0 0 60px rgba(0,240,255,0.5)' : 'box-shadow: 0 0 8px #0ff, 0 0 16px #f0f, 0 0 24px #ff0';
+    const neonShadow = hasShadow ? 'box-shadow:0 0 15px #0ff, 0 0 30px #f0f, 0 0 45px #ff0, 0 0 60px rgba(0,240,255,0.5)' : 'box-shadow:0 0 8px #0ff, 0 0 16px #f0f, 0 0 24px #ff0';
+    const vintageStyle = hasShadow ? 'box-shadow:8px 8px 20px rgba(139,119,101,0.4)' : '';
 
     // terminal 终端窗口
     if (hasTerminal) {
