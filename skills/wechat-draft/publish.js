@@ -556,7 +556,7 @@ function applyCss(html, theme) {
     '--foreground': '0, 0, 0',
     '--blockquote-background': 'rgba(0,0,0,0.05)',
     '--el-primary': '#1a56db','--el-bg': '#0f172a','--el-surface': '#1e293b',
-    '--el-border': '#334155','--el-text': '#e2e8f0','--el-muted': '#94a3b8',
+    '--el-border': '#334155','--el-text': '#1a1a2e','--el-muted': '#64748b',
     '--el-accent': '#3b82f6','--el-green': '#10b981','--el-red': '#ef4444',
     '--el-yellow': '#f59e0b','--el-purple': '#8b5cf6',
   };
