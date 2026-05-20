@@ -119,6 +119,7 @@ function imgRule(tokens, idx) {
   const Gy = alt.includes('|gallery3');
   const G2 = alt.includes('|gallery2');
   const Cs = alt.includes('|cascade');
+  const St = alt.includes('|strip');
   const Sk = alt.includes('|stack');
   const Ad = alt.includes('|adaptive');
   const Dl = alt.includes('|dual');
