@@ -12,7 +12,47 @@ function md2html(md) {
   const mdit = require('/usr/local/lib/node_modules/md2wechat/node_modules/markdown-it')();
   mdit.set({ html: true, linkify: true, typographer: true });
   mdit.renderer.rules.image = imgRule;
-  return mdit.render(md);
+  let html = mdit.render(md);
+  // post-process: group consecutive row images into flex grids
+  const rowRe = /<__ROW__([^>]*)>([\s\S]*?)<\/__ROW__>/g;
+  let images = [];
+  let m;
+  while ((m = rowRe.exec(html)) !== null) {
+    images.push({ attrs: m[1], inner: m[2] });
+  }
+  // wrap every N consecutive row images in a flex container
+  let result = '';
+  let lastIdx = 0;
+  rowRe.lastIndex = 0;
+  let match;
+  const imgRe = /<__ROW__([^>]*)>([\s\S]*?)<\/__ROW__>/g;
+  const groups = [];
+  let current = [];
+  while ((match = imgRe.exec(html)) !== null) {
+    if (current.length > 0 && match.index - (imgRe.lastIndex - match[0].length) > 10) {
+      groups.push(current);
+      current = [];
+    }
+    current.push(match[0]);
+  }
+  if (current.length) groups.push(current);
+  // rebuild html replacing groups
+  let pos = 0;
+  for (const group of groups) {
+    const grpStart = html.indexOf(group[0], pos);
+    const grpEnd = html.indexOf(group[group.length-1], grpStart) + group[group.length-1].length;
+    const inner = group.join('');
+    if (group.length === 1) {
+      result += html.slice(pos, grpStart);
+      result += inner.replace('<__ROW__', '<div style="display:block;margin:1em auto;max-width:100%;">').replace('</__ROW__>', '</div>');
+    } else {
+      result += html.slice(pos, grpStart);
+      result += '<div style="display:flex;gap:8px;max-width:100%;margin:1em auto;">' + inner.replace(/<__ROW__/g, '<div style="flex:1;min-width:0">').replace(/<\/__ROW__>/g, '</div>') + '</div>';
+    }
+    pos = grpEnd;
+  }
+  result += html.slice(pos);
+  return result;
 }
 
 function imgRule(tokens, idx) {
@@ -46,6 +86,8 @@ function imgRule(tokens, idx) {
   const Wc = alt.includes('|watercolor');
   const Pn = alt.includes('|pin');
   const Sl = alt.includes('|slim');
+  const Rw = alt.includes('|row');
+  const Ad = alt.includes('|adaptive');
   const Dl = alt.includes('|dual');
   const Fs = alt.includes('|focus');
   const Fl = alt.includes('|float');
@@ -57,7 +99,7 @@ function imgRule(tokens, idx) {
           .replace(/\|neon/g,'').replace(/\|vintage/g,'').replace(/\|tv/g,'')
           .replace(/\|code/g,'').replace(/\|note/g,'').replace(/\|ipad/g,'')
           .replace(/\|newspaper/g,'').replace(/\|grayscale/g,'').replace(/\|float/g,'')
-          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|tape/g,'').replace(/\|bookpage/g,'').replace(/\|comic/g,'').replace(/\|ticket/g,'').replace(/\|caption/g,'').replace(/\|slim/g,'').replace(/\|pin/g,'').replace(/\|focus/g,'').replace(/\|dual/g,'').trim();
+          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|tape/g,'').replace(/\|bookpage/g,'').replace(/\|comic/g,'').replace(/\|ticket/g,'').replace(/\|caption/g,'').replace(/\|slim/g,'').replace(/\|pin/g,'').replace(/\|focus/g,'').replace(/\|dual/g,'').replace(/\|adaptive/g,'').replace(/\|row/g,'').trim();
   const title = t.attrGet('title') || '';
   const ta = title ? ' title="' + title + '"' : '';
 
