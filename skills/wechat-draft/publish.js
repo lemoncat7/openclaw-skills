@@ -173,8 +173,6 @@ function md2html(md) {
   }
   result2 += result.slice(pos2);
   return result2;
-  result += html.slice(pos);
-  return result2;
 }
 
 function imgRule(tokens, idx) {
@@ -545,7 +543,7 @@ function resolveCssVars(css, vars) {
     result = result.replace(/var\(--([\w-]+)(?:,\s*([^)]*))?\)/g, (_, n, f) => vars['--' + n] || f || 'inherit');
     if (result === prev) break;
   }
-  return result2;
+  return result2 || result || html;
 }
 
 function applyCss(html, theme) {
@@ -580,7 +578,7 @@ function applyCss(html, theme) {
     const r = new RegExp('<'+tag+'([^>]*?)(style="[^"]*")?([^>]*?)>', 'gi');
     result = result.replace(r, (match, a, b, c) => b ? match : '<'+tag+a+' style="'+props+'"'+c+'>');
   }
-  return result2;
+  return result;
 }
 
 async function publishDraft({ mdPath, coverPath, title, digest, theme }) {
@@ -607,7 +605,7 @@ async function publishDraft({ mdPath, coverPath, title, digest, theme }) {
   const result = JSON.parse(draftRes);
   if (result.media_id) console.log('✅ 草稿创建成功! media_id: ' + result.media_id);
   else console.error('❌ 失败:', result);
-  return result2;
+  return result;
 }
 
 if (require.main === module) {
