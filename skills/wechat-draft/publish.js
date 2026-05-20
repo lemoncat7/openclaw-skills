@@ -44,6 +44,7 @@ function imgRule(tokens, idx) {
   const Bl = alt.includes('|blueprint');
   const Cd = alt.includes('|card');
   const Wc = alt.includes('|watercolor');
+  const Pn = alt.includes('|pin');
   const Sl = alt.includes('|slim');
   const Fl = alt.includes('|float');
   const Gr = alt.includes('|gradient');
@@ -54,7 +55,7 @@ function imgRule(tokens, idx) {
           .replace(/\|neon/g,'').replace(/\|vintage/g,'').replace(/\|tv/g,'')
           .replace(/\|code/g,'').replace(/\|note/g,'').replace(/\|ipad/g,'')
           .replace(/\|newspaper/g,'').replace(/\|grayscale/g,'').replace(/\|float/g,'')
-          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|tape/g,'').replace(/\|bookpage/g,'').replace(/\|comic/g,'').replace(/\|ticket/g,'').replace(/\|caption/g,'').trim();
+          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|tape/g,'').replace(/\|bookpage/g,'').replace(/\|comic/g,'').replace(/\|ticket/g,'').replace(/\|caption/g,'').replace(/\|slim/g,'').replace(/\|pin/g,'').trim();
   const title = t.attrGet('title') || '';
   const ta = title ? ' title="' + title + '"' : '';
 
@@ -329,6 +330,22 @@ function imgRule(tokens, idx) {
     return '<figure style="margin:1.2em auto;text-align:center">' +
            '<img src="'+src+'" alt="'+alt+'"'+ta+' style="display:block;max-width:100%;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.1)">' +
            '<figcaption style="text-align:center;color:#94a3b8;font-size:13px;margin-top:0.5em;font-style:italic">'+alt+'</figcaption></figure>';
+  }
+
+  // slim 超细边框
+  if (Sl) {
+    const slSd = S ? 'box-shadow:0 4px 16px rgba(0,0,0,0.3)' : '';
+    return '<div style="display:block;margin:1em auto;max-width:100%;' + slSd + '">' +
+           '<img src="'+src+'" alt="'+alt+'"'+ta+' style="display:block;width:100%;border:1px solid rgba(0,0,0,0.12);border-radius:6px;"></div>';
+  }
+
+  // pin Pinterest 风格
+  if (Pn) {
+    const pnAlt = alt || 'Pinterest';
+    const pnSd = S ? 'box-shadow:0 8px 24px rgba(0,0,0,0.15)' : 'box-shadow:0 3px 10px rgba(0,0,0,0.1)';
+    return '<div style="display:block;max-width:100%;margin:1.5em auto;' + pnSd + '">' +
+           '<img src="'+src+'" alt="'+pnAlt+'"'+ta+' style="display:block;width:100%;border-radius:8px;">' +
+           '<p style="text-align:center;color:#8a8a8a;font-size:12px;margin:6px 0 0;font-family:-apple-system,sans-serif;">'+pnAlt+'</p></div>';
   }
 
   let style = 'display:block;max-width:100%;margin:1.2em auto;border-radius:8px;';
