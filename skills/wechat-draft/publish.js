@@ -46,6 +46,7 @@ function imgRule(tokens, idx) {
   const Wc = alt.includes('|watercolor');
   const Pn = alt.includes('|pin');
   const Sl = alt.includes('|slim');
+  const Fs = alt.includes('|focus');
   const Fl = alt.includes('|float');
   const Gr = alt.includes('|gradient');
   const Cp = alt.includes('|caption');
@@ -55,7 +56,7 @@ function imgRule(tokens, idx) {
           .replace(/\|neon/g,'').replace(/\|vintage/g,'').replace(/\|tv/g,'')
           .replace(/\|code/g,'').replace(/\|note/g,'').replace(/\|ipad/g,'')
           .replace(/\|newspaper/g,'').replace(/\|grayscale/g,'').replace(/\|float/g,'')
-          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|tape/g,'').replace(/\|bookpage/g,'').replace(/\|comic/g,'').replace(/\|ticket/g,'').replace(/\|caption/g,'').replace(/\|slim/g,'').replace(/\|pin/g,'').trim();
+          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|tape/g,'').replace(/\|bookpage/g,'').replace(/\|comic/g,'').replace(/\|ticket/g,'').replace(/\|caption/g,'').replace(/\|slim/g,'').replace(/\|pin/g,'').replace(/\|focus/g,'').trim();
   const title = t.attrGet('title') || '';
   const ta = title ? ' title="' + title + '"' : '';
 
@@ -332,7 +333,15 @@ function imgRule(tokens, idx) {
            '<figcaption style="text-align:center;color:#94a3b8;font-size:13px;margin-top:0.5em;font-style:italic">'+alt+'</figcaption></figure>';
   }
 
-  // slim 超细边框
+  // focus 聚焦暗角
+  if (Fs) {
+    const fsAlt = alt || 'Focus';
+    const fsSd = S ? 'box-shadow:0 6px 24px rgba(0,0,0,0.4)' : '';
+    return '<div style="display:block;max-width:100%;margin:1.5em auto;position:relative;overflow:hidden;border-radius:8px;' + fsSd + '">' +
+           '<div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,0.55) 100%);pointer-events:none;z-index:2;border-radius:8px"></div>' +
+           '<img src="'+src+'" alt="'+fsAlt+'"'+ta+' style="display:block;width:100%;border-radius:8px;filter:contrast(1.05) brightness(0.95)"></div>';
+  }
+
   if (Sl) {
     const slSd = S ? 'box-shadow:0 4px 16px rgba(0,0,0,0.3)' : '';
     return '<div style="display:block;margin:1em auto;max-width:100%;' + slSd + '">' +
