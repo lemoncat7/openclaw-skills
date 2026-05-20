@@ -38,6 +38,7 @@ function imgRule(tokens, idx) {
   const G = alt.includes('|grayscale');
   const Gl = alt.includes('|glass');
   const Tp = alt.includes('|tape');
+  const Bk = alt.includes('|bookpage');
   const Fl = alt.includes('|float');
   const Gr = alt.includes('|gradient');
   const Cp = alt.includes('|caption');
@@ -47,7 +48,7 @@ function imgRule(tokens, idx) {
           .replace(/\|neon/g,'').replace(/\|vintage/g,'').replace(/\|tv/g,'')
           .replace(/\|code/g,'').replace(/\|note/g,'').replace(/\|ipad/g,'')
           .replace(/\|newspaper/g,'').replace(/\|grayscale/g,'').replace(/\|float/g,'')
-          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|caption/g,'').trim();
+          .replace(/\|gradient/g,'').replace(/\|glass/g,'').replace(/\|tape/g,'').replace(/\|bookpage/g,'').replace(/\|caption/g,'').trim();
   const title = t.attrGet('title') || '';
   const ta = title ? ' title="' + title + '"' : '';
 
@@ -65,6 +66,17 @@ function imgRule(tokens, idx) {
            '<div style="background:#fffef5;padding:'+tpPad+';border-radius:2px;border:1px solid rgba(0,0,0,0.06)">' +
            '<img src="'+src+'" alt="'+tpAlt+'"'+ta+' style="display:block;width:100%;border-radius:3px;filter:contrast(1.03) brightness(1.02)"></div></div>';
   }
+
+  if (Bk) {
+    const bkAlt = alt || 'Reading Note';
+    const bkSd = S ? 'box-shadow:4px 4px 20px rgba(0,0,0,0.25)' : 'box-shadow:2px 2px 10px rgba(0,0,0,0.15)';
+    return '<div style="display:block;max-width:100%;margin:1.5em auto;padding:0 24px 20px;background:#faf7f2;border-radius:2px;position:relative;' + bkSd + '">' +
+           '<div style="position:absolute;top:0;bottom:0;left:20px;width:2px;background:linear-gradient(to bottom,#e8d5b0,#d4c095,#e8d5b0)"></div>' +
+           '<div style="margin-left:14px;padding:14px 0 0">' +
+           '<p style="font-family:Baskerville,Georgia,serif;font-size:13px;line-height:2;color:#4a3728;margin:0 0 6px;border-bottom:1px solid rgba(139,90,43,0.2);padding-bottom:6px">&#x1F4D6; ' + bkAlt + '</p>' +
+           '<img src="'+src+'" alt="'+bkAlt+'"'+ta+' style="display:block;width:100%;border-radius:2px;filter:sepia(0.08) contrast(1.05)"></div></div>';
+  }
+
 
   if (Gl) {
     const glAlt = alt || 'Glass Card';
