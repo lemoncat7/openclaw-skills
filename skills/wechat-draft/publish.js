@@ -51,8 +51,36 @@ function md2html(md) {
     }
     pos = grpEnd;
   }
+  // also handle __GALLERY3__ post-processing
+  const galRe = /<__GALLERY3__([^>]*)>([\s\S]*?)<\/__GALLERY3__>/g;
+  const galMatches = [];
+  let gm;
+  while ((gm = galRe.exec(result)) !== null) galMatches.push(gm[0]);
+  const galGroups = [];
+  let galCurrent = [];
+  for (const m of galMatches) {
+    if (galCurrent.length > 0 && result.indexOf(m) - result.indexOf(galCurrent[galCurrent.length-1]) > 200) {
+      galGroups.push(galCurrent); galCurrent = [];
+    }
+    galCurrent.push(m);
+    if (galCurrent.length === 3) { galGroups.push(galCurrent); galCurrent = []; }
+  }
+  if (galCurrent.length) galGroups.push(galCurrent);
+  let pos2 = 0;
+  let result2 = '';
+  for (const grp of galGroups) {
+    const gs = result.indexOf(grp[0], pos2);
+    const ge = result.indexOf(grp[grp.length-1], gs) + grp[grp.length-1].length;
+    const inner = grp.join('');
+    result2 += result.slice(pos2, gs);
+    result2 += '<div style="display:flex;gap:6px;max-width:100%;margin:1em auto;border-radius:8px;overflow:hidden">' +
+               inner.replace(/<__GALLERY3__[^>]*>/g, '').replace(/<\/__GALLERY3__>/g, '').replace(/<img/g, '<img style="display:block;width:100%;height:100%;object-fit:cover;border-radius:8px;"') + '</div>';
+    pos2 = ge;
+  }
+  result2 += result.slice(pos2);
+  return result2;
   result += html.slice(pos);
-  return result;
+  return result2;
 }
 
 function imgRule(tokens, idx) {
@@ -415,7 +443,7 @@ function resolveCssVars(css, vars) {
     result = result.replace(/var\(--([\w-]+)(?:,\s*([^)]*))?\)/g, (_, n, f) => vars['--' + n] || f || 'inherit');
     if (result === prev) break;
   }
-  return result;
+  return result2;
 }
 
 function applyCss(html, theme) {
@@ -450,7 +478,7 @@ function applyCss(html, theme) {
     const r = new RegExp('<'+tag+'([^>]*?)(style="[^"]*")?([^>]*?)>', 'gi');
     result = result.replace(r, (match, a, b, c) => b ? match : '<'+tag+a+' style="'+props+'"'+c+'>');
   }
-  return result;
+  return result2;
 }
 
 async function publishDraft({ mdPath, coverPath, title, digest, theme }) {
@@ -477,7 +505,7 @@ async function publishDraft({ mdPath, coverPath, title, digest, theme }) {
   const result = JSON.parse(draftRes);
   if (result.media_id) console.log('✅ 草稿创建成功! media_id: ' + result.media_id);
   else console.error('❌ 失败:', result);
-  return result;
+  return result2;
 }
 
 if (require.main === module) {
