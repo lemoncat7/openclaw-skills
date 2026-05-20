@@ -60,19 +60,22 @@ function markdownToHtml(md) {
     
     // 手机边框
     if (hasPhone) {
-      return `<div style="display:block;max-width:320px;margin:1.2em auto;padding:8px 8px 12px;background:#1e293b;border-radius:24px;box-shadow:0 4px 20px rgba(0,0,0,0.3);"><div style="width:60px;height:4px;background:#334155;border-radius:4px;margin:0 auto 8px;"></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;border-radius:16px;"/></div>`;
+      const phoneShadow = hasShadow ? "box-shadow:0 8px 30px rgba(0,0,0,0.4);" : "box-shadow:0 4px 20px rgba(0,0,0,0.3);";
+      return `<div style="display:block;max-width:320px;margin:1.2em auto;padding:8px 8px 12px;background:#1e293b;border-radius:24px;${phoneShadow}"><div style="width:60px;height:4px;background:#334155;border-radius:4px;margin:0 auto 8px;"></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;border-radius:16px;"/></div>`;
     }
     
     // macOS 窗口
     if (hasMacos) {
       const macTitle = alt || 'Screenshot';
-      return `<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:10px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.3);border:1px solid #2d2d2d;"><div style="background:#2d2d2d;padding:10px 14px;display:flex;align-items:center;gap:8px;"><span style="width:12px;height:12px;border-radius:50%;background:#ff5f57;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#28c840;display:inline-block;"></span><span style="flex:1;text-align:center;color:#999;font-size:12px;font-family:-apple-system,sans-serif;">${macTitle}</span></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;"/></div>`;
+      const macShadow = hasShadow ? "0 12px 40px rgba(0,0,0,0.5)" : "0 8px 30px rgba(0,0,0,0.3)";
+      return `<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:10px;overflow:hidden;box-shadow:${macShadow};border:1px solid #2d2d2d;"><div style="background:#2d2d2d;padding:10px 14px;display:flex;align-items:center;gap:8px;"><span style="width:12px;height:12px;border-radius:50%;background:#ff5f57;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span><span style="width:12px;height:12px;border-radius:50%;background:#28c840;display:inline-block;"></span><span style="flex:1;text-align:center;color:#999;font-size:12px;font-family:-apple-system,sans-serif;">${macTitle}</span></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;"/></div>`;
     }
     
     // 浏览器窗口
     if (hasBrowser) {
       const browserUrl = alt || 'https://example.com';
-      return `<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:8px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.25);border:1px solid #d1d5db;"><div style="background:#f3f4f6;padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #d1d5db;"><span style="font-size:14px;">🔒</span><span style="flex:1;color:#6b7280;font-size:12px;font-family:-apple-system,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${browserUrl}</span></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;"/></div>`;
+      const browserShadow = hasShadow ? "0 10px 36px rgba(0,0,0,0.35)" : "0 6px 24px rgba(0,0,0,0.25)";
+      return `<div style="display:block;max-width:100%;margin:1.2em auto;border-radius:8px;overflow:hidden;box-shadow:${browserShadow};border:1px solid #d1d5db;"><div style="background:#f3f4f6;padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #d1d5db;"><span style="font-size:14px;">🔒</span><span style="flex:1;color:#6b7280;font-size:12px;font-family:-apple-system,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${browserUrl}</span></div><img src="${src}" alt="${alt}"${titleAttr} style="display:block;width:100%;"/></div>`;
     }
     
     // 普通效果
