@@ -172,7 +172,7 @@ function md2html(md) {
     pos2 = ge;
   }
   result2 += result.slice(pos2);
-  return result2;
+  return result2 || result || html;
 }
 
 function imgRule(tokens, idx) {
@@ -543,7 +543,7 @@ function resolveCssVars(css, vars) {
     result = result.replace(/var\(--([\w-]+)(?:,\s*([^)]*))?\)/g, (_, n, f) => vars['--' + n] || f || 'inherit');
     if (result === prev) break;
   }
-  return result2 || result || html;
+  return result || html;
 }
 
 function applyCss(html, theme) {
