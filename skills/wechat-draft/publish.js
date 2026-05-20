@@ -42,6 +42,8 @@ function imgRule(tokens, idx) {
   const Cm = alt.includes('|comic');
   const Tk = alt.includes('|ticket');
   const Bl = alt.includes('|blueprint');
+  const Cd = alt.includes('|card');
+  const Wc = alt.includes('|watercolor');
   const Fl = alt.includes('|float');
   const Gr = alt.includes('|gradient');
   const Cp = alt.includes('|caption');
@@ -80,6 +82,28 @@ function imgRule(tokens, idx) {
            '<img src="'+src+'" alt="'+bkAlt+'"'+ta+' style="display:block;width:100%;border-radius:2px;filter:sepia(0.08) contrast(1.05)"></div></div>';
   }
 
+
+
+  // watercolor 水彩晕染
+  if (Wc) {
+    const wcAlt = alt || 'Watercolor';
+    const wcSd = S ? 'box-shadow:0 8px 32px rgba(0,0,0,0.2)' : '';
+    return '<div style="display:block;max-width:100%;margin:1.5em auto;padding:16px;background:#fff;border-radius:4px;position:relative;overflow:hidden;' + wcSd + '">' +
+           '<div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(168,212,244,0.4),transparent 70%);border-radius:50%;pointer-events:none"></div>' +
+           '<div style="position:absolute;bottom:-15px;left:-15px;width:100px;height:100px;background:radial-gradient(circle,rgba(244,212,168,0.35),transparent 70%);border-radius:50%;pointer-events:none"></div>' +
+           '<img src="'+src+'" alt="'+wcAlt+'"'+ta+' style="display:block;width:100%;border-radius:4px;filter:contrast(0.95) brightness(1.02) saturate(0.9);position:relative;z-index:1"></div>';
+  }
+
+  // card 简洁卡片
+  if (Cd) {
+    const cdTxt = alt || 'TECH CARD';
+    const cdSd = S ? 'box-shadow:0 6px 24px rgba(0,0,0,0.3)' : '';
+    return '<div style="display:block;max-width:100%;margin:1.2em auto;background:#1e1e2e;border:1px solid #333;border-radius:12px;overflow:hidden;' + cdSd + '">' +
+           '<div style="background:#2a2a3e;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333">' +
+           '<span style="font-size:12px;color:#888">&#x25CF; &#x25CF; &#x25CF;</span>' +
+           '<span style="font-size:11px;color:#666;font-family:monospace">DWG-001 &middot; 2026.05</span></div>' +
+           '<img src="'+src+'" alt="'+cdTxt+'"'+ta+' style="display:block;width:100%"></div>';
+  }
 
   if (Bl) {
     const blTxt = alt || 'ARCHITECTURAL DRAWING';
