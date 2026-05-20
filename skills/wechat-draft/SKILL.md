@@ -1,14 +1,13 @@
 # Wechat Draft — 微信 API 直发草稿箱
 
-直接用微信 API 发布文章，不依赖第三方工具。自己掌控每一步。
+直接调微信 API 发布文章，不依赖第三方工具，自己掌控每一步。
 
-## 核心流程
+## 安装
 
-```
-1. 压缩封面 → sharp 转为 300x300 JPEG ≤64KB
-2. 上传封面 → material/add_material?type=thumb（不是 media/upload）
-3. 写文章 → Markdown 转 HTML
-4. 创建草稿 → draft/add
+需要 Node.js 环境：
+```bash
+npm install -g @doocs/md-cli  # markdown-it 解析器
+npm install -g kuaifa  # sharp 压缩封面用
 ```
 
 ## 配置
@@ -25,37 +24,45 @@
 ## 使用
 
 ```bash
-# 生成 .env（publish.js 从这里读凭据）
-python3 -c "
-import json, os
-with open(os.path.expanduser('~/.openclaw/conf/wechat-draft/credentials.json')) as f:
-    c = json.load(f)
-with open(os.path.expanduser('~/.openclaw/workspace/.env'), 'w') as f:
-    for k, v in c.items():
-        f.write(f'{k}={v}\n')
-"
+node ~/.openclaw/workspace/skills/wechat-draft/publish.js [--theme elegant] <文章.md> <封面.png> <标题> [摘要]
+```
 
-# 执行发布（必须在 ~/.openclaw/workspace 下）
-cd ~/.openclaw/workspace
-node ~/.openclaw/workspace/skills/wechat-draft/publish.js \
-  /tmp/article.md \
-  /tmp/cover.png \
-  "文章标题" \
-  "文章摘要"
+## 主题
+
+| 主题 | 说明 |
+|------|------|
+| `grace` | 优雅简洁风格（默认） |
+| `elegant` | 深蓝科技风，高对比度 |
+| `default` | doocs/md 原生样式 |
+| `simple` | 简洁风格 |
+
+## 图片效果（支持叠加 `|shadow`）
+
+| 语法 | 效果 |
+|------|------|
+| `\|border` | 边框 |
+| `\|shadow` | 阴影（可叠加） |
+| `\|rounded` | 大圆角 |
+| `\|phone\|shadow` | 手机边框+阴影 |
+| `\|macos\|shadow` | macOS 窗口+阴影 |
+| `\|browser\|shadow` | 浏览器窗口+阴影 |
+| `\|terminal` | 终端窗口（黑底+路径栏） |
+| `\|polaroid` | 拍立得（白底+标签区） |
+| `\|film` | 电影胶片（深色+参数栏） |
+| `\|caption` | 图片+描述文字 |
+
+## 示例
+
+```markdown
+![截图|phone|shadow](img.png)   手机+阴影
+![截图|macos|shadow](img.png)   Mac窗口+阴影
+![截图|terminal](img.png)      终端窗口
+![照片|polaroid](img.jpg)       拍立得
+![剧照|film](img.jpg)           电影胶片
 ```
 
 ## 已知坑
 
-- **封面**：必须用 `material/add_material?type=thumb`，`media/upload?type=thumb` 返回的 thumb_media_id 创建草稿会报 40007
-- **封面格式**：微信要求 JPEG ≤64KB，sharp 压缩到 300x300 再转 JPEG
-- **CSS**：使用 doocs/md 主题 CSS（base.css + default.css）
-
-## 微信 API 速查
-
-| 操作 | API |
-|------|-----|
-| 获取 access_token | `GET /cgi-bin/token?grant_type=client_credential&appid=&secret=` |
-| 上传封面缩略图 | `POST /cgi-bin/material/add_material?access_token=&type=thumb` |
-| 创建草稿 | `POST /cgi-bin/draft/add?access_token=` |
-| 查询草稿 | `POST /cgi-bin/draft/get?access_token=` |
-| 删除草稿 | `POST /cgi-bin/draft/delete?access_token=` |
+- **封面**：必须用 `material/add_material?type=thumb`，不是 `media/upload`
+- **封面格式**：JPEG ≤64KB，sharp 自动压缩
+- **CSS 变量**：elegant 主题用深色变量
